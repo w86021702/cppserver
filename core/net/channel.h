@@ -1,7 +1,7 @@
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
 
-namespace COM{
+namespace CM{
 
 class Channel
 {
@@ -20,4 +20,3 @@ private:
 }
 
 #endif
-
