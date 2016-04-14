@@ -1,6 +1,8 @@
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
 
+namespace COM{
+
 class Channel
 {
 public:
@@ -14,6 +16,8 @@ public:
 private:
 	int _fd;
 };
+
+}
 
 #endif
 
