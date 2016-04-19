@@ -4,6 +4,9 @@
 #include <cstring>
 #include <sys/socket.h>
 #include <event.h>
+#include <event2/event.h>
+#include <event2/buffer.h>
+#include <event2/bufferevent.h>
 #include <fcntl.h>
 #include <time.h>
 
@@ -24,6 +27,35 @@ void timer_cb(evutil_socket_t fd, short event, void* arg)
 
 void on_accept(evutil_socket_t fd, short event, void *arg)
 {
+}
+
+void on_read(evutil_socket_t fd, short event, void *arg)
+{
+}
+
+int set_socket_nonblock(evutil_socket_t& fd)
+{
+    //设置非阻塞
+    int flags = fcntl(fd, F_GETFL, 0);
+    if ( flags < 0 )
+    {
+        printf("socket error");
+        return -1;
+    }
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+    return 0;
+}
+
+void make_buffer_event(struct event_base *ev_base)
+{
+    evutil_socket_t fd;
+    if ( 0 != set_socket_nonblock(fd) )
+    {
+        return ;
+    }
+    struct bufferevent *bev;
+    bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_enable(bev, EV_READ | EV_WRITE | EV_ET | EV_PERSIST);
 }
 
 int main(int argc, char** argv)
