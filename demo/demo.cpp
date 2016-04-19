@@ -27,6 +27,7 @@ void timer_cb(evutil_socket_t fd, short event, void* arg)
 
 void on_accept(evutil_socket_t fd, short event, void *arg)
 {
+    printf("on accept\n");
 }
 
 void on_read(evutil_socket_t fd, short event, void *arg)
@@ -46,6 +47,11 @@ int set_socket_nonblock(evutil_socket_t& fd)
     return 0;
 }
 
+void readcb(struct bufferevent *bev, void *ptr)
+{
+    printf("on read!buf:%d\n", &ptr);
+}
+
 void make_buffer_event(struct event_base *ev_base)
 {
     evutil_socket_t fd;
@@ -55,6 +61,7 @@ void make_buffer_event(struct event_base *ev_base)
     }
     struct bufferevent *bev;
     bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_setcb(bev, readcb, NULL, NULL, NULL);
     bufferevent_enable(bev, EV_READ | EV_WRITE | EV_ET | EV_PERSIST);
 }
 
@@ -79,6 +86,7 @@ int main(int argc, char** argv)
         showUsage();
         exit(0);
     }
+    printf("listen port %d\n", port);
 
     evutil_socket_t listenFd = socket(AF_INET, SOCK_STREAM, 0);
     if ( listenFd < 0 )
@@ -91,23 +99,34 @@ int main(int argc, char** argv)
     memset(&seraddr, 0, sizeof(seraddr));
     seraddr.sin_family = AF_INET;
     seraddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    seraddr.sin_port = port;
-
-    bind(listenFd, (sockaddr *)&seraddr, sizeof(seraddr));
-    listen(listenFd, 10);
+    seraddr.sin_port = htons(port);
 
     //设置非阻塞
     int flags = fcntl(listenFd, F_GETFL, 0);
     if ( flags < 0 )
     {
-        printf("socket error");
+        printf("socket error\n");
         return -1;
     }
     fcntl(listenFd, F_SETFL, flags | O_NONBLOCK);
 
+    if ( bind(listenFd, (sockaddr *)&seraddr, sizeof(seraddr)) < 0 )
+    {
+        printf("bind fail\n");
+        return -1;
+    }
+
+    if ( listen(listenFd, 10) < 0 )
+    {
+        printf("listen fail\n");
+        return -1;
+    }
+    printf("listen %d\n", listenFd);
+
     struct event_base *ev_base = event_init();
-    struct event ev;
-    event_set(&ev, listenFd, EV_READ | EV_PERSIST, NULL, NULL);
+    //struct event ev;
+    //event_set(&ev, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
+    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
 
     struct event timer_ev;
     struct timeval five;
@@ -115,8 +134,8 @@ int main(int argc, char** argv)
     five.tv_sec = 5;
     evtimer_set(&timer_ev, timer_cb, &timer_ev);
     //event_set(&timer_ev, -1, EV_TIMEOUT | EV_PERSIST, timer_cb, NULL);
-    event_add(&ev, NULL);
-    event_add(&timer_ev, &five);
+    //event_add(&timer_ev, &five);
+    event_add(listen_ev, NULL);
 
     //循环
     event_base_dispatch(ev_base);
