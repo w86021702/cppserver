@@ -34,7 +34,11 @@ void on_accept(evutil_socket_t fd, short event, void *arg)
     struct sockaddr_in addr;
     socklen_t len = 0;
     evutil_socket_t newFd = accept(g_listen_fd, (struct sockaddr*)&addr, &len);
-    printf("accept suceess fd:%d\n", newFd);
+    printf("accept create new_bufferev fd:%d\n", newFd);
+
+	//struct bufferevent *bev;
+	//if ( 0 != create_client(event
+
 }
 
 void on_read(evutil_socket_t fd, short event, void *arg)
@@ -71,6 +75,15 @@ void make_buffer_event(struct event_base *ev_base)
     bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
     bufferevent_setcb(bev, readcb, NULL, NULL, NULL);
     bufferevent_enable(bev, EV_READ | EV_WRITE | EV_ET | EV_PERSIST);
+}
+
+int create_client(struct event_base *ev_base, evutil_socket_t fd, struct bufferevent *bev)
+{
+	bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_setcb(bev, readcb, NULL, NULL, NULL);
+    bufferevent_enable(bev, EV_READ | EV_ET | EV_PERSIST);
+
+	return 0;
 }
 
 int main(int argc, char** argv)
