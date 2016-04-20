@@ -10,6 +10,9 @@
 #include <fcntl.h>
 #include <time.h>
 
+
+evutil_socket_t g_listen_fd = 0;
+
 void showUsage()
 {
     printf("-t ip -p port\n");
@@ -28,8 +31,10 @@ void timer_cb(evutil_socket_t fd, short event, void* arg)
 void on_accept(evutil_socket_t fd, short event, void *arg)
 {
     printf("on accept\n");
-    //struct sockaddr_in addr;
-    //evutil_socket_t newFd = accept(listenFd, (sockaddr*)&addr, sizeof(addr));
+    struct sockaddr_in addr;
+    socklen_t len = 0;
+    evutil_socket_t newFd = accept(g_listen_fd, (struct sockaddr*)&addr, &len);
+    printf("accept suceess fd:%d\n", newFd);
 }
 
 void on_read(evutil_socket_t fd, short event, void *arg)
@@ -135,6 +140,7 @@ int main(int argc, char** argv)
     //evtimer_set(&timer_ev, timer_cb, &timer_ev);
     //event_set(&timer_ev, -1, EV_TIMEOUT | EV_PERSIST, timer_cb, NULL);
     //event_add(&timer_ev, &five);
+    g_listen_fd = listenFd;
     event_add(listen_ev, NULL);
 
     //循环
