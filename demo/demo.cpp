@@ -74,9 +74,13 @@ void readcb(struct bufferevent *bev, void *ptr)
 			bufferevent_free(bev);
 			break;
 		}
-		else
+		else if ( len > 0 )
 		{
 			printf("from cli : %s\n", buf);
+		}
+		else
+		{
+			break;
 		}
 	}
 }
