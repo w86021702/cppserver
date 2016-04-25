@@ -10,8 +10,8 @@
 #include <fcntl.h>
 #include <time.h>
 
-
-evutil_socket_t g_listen_fd = 0;
+struct event_base *g_base;
+int create_client(struct event_base *ev_base, evutil_socket_t fd, struct bufferevent *bev);
 
 void showUsage()
 {
@@ -33,12 +33,14 @@ void on_accept(evutil_socket_t fd, short event, void *arg)
     printf("on accept\n");
     struct sockaddr_in addr;
     socklen_t len = 0;
-    evutil_socket_t newFd = accept(g_listen_fd, (struct sockaddr*)&addr, &len);
+    evutil_socket_t newFd = accept(fd, (struct sockaddr*)&addr, &len);
     printf("accept create new_bufferev fd:%d\n", newFd);
 
-	//struct bufferevent *bev;
-	//if ( 0 != create_client(event
-
+	struct bufferevent *bev;
+	if ( 0 != create_client(g_base, newFd, bev) )
+	{
+		printf("make socket fail\n");
+	}
 }
 
 void on_read(evutil_socket_t fd, short event, void *arg)
@@ -62,6 +64,21 @@ int set_socket_nonblock(evutil_socket_t& fd)
 void readcb(struct bufferevent *bev, void *ptr)
 {
     printf("on read!buf:%d\n", &ptr);
+	char buf[2048];
+	while(1)
+	{
+		int len = bufferevent_read(bev, buf, sizeof(buf)) ;
+		if ( len == 0 )
+		{
+			printf("close client\n");
+			bufferevent_free(bev);
+			break;
+		}
+		else
+		{
+			printf("from cli : %s\n", buf);
+		}
+	}
 }
 
 void make_buffer_event(struct event_base *ev_base)
@@ -145,6 +162,7 @@ int main(int argc, char** argv)
     //struct event ev;
     //event_set(&ev, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
     struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
+	g_base = ev_base;
 
     //struct event timer_ev;
     struct timeval five;
@@ -153,7 +171,6 @@ int main(int argc, char** argv)
     //evtimer_set(&timer_ev, timer_cb, &timer_ev);
     //event_set(&timer_ev, -1, EV_TIMEOUT | EV_PERSIST, timer_cb, NULL);
     //event_add(&timer_ev, &five);
-    g_listen_fd = listenFd;
     event_add(listen_ev, NULL);
 
     //循环

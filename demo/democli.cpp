@@ -7,6 +7,7 @@
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 void showUsage()
 {
@@ -57,6 +58,9 @@ int main(int argc, char** argv)
     addr.sin_family = AF_INET;
     //addr.sin_addr.s_addr = inet_addr(ip);
     int res = connect(fd, (struct sockaddr*)&addr, sizeof(addr));
+	char buf[] = "hello world";
+	write(fd, buf, sizeof(buf));
+	close(fd);
 
     return 0;
 }
