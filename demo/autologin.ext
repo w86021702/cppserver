@@ -1,0 +1,31 @@
+#!/usr/bin/expect
+set endl \n
+set timeout  7200
+
+set USER "godman"
+
+if {$argc < 3} {
+        puts stderr "Usage: autossh.ext <IP> <COMMAND> <USER>"
+        exit 1
+}
+
+set IP [lindex $argv 0]
+set COMMAND [lindex $argv 1]
+set USER [lindex $argv 2]
+set PORT [lindex $argv 3]
+
+
+if {$USER == "root"} {
+        set PSW ""
+} elseif {$USER == "godman"} {
+        set PSW "thegodofman"
+}
+
+
+spawn -noecho ssh -l$USER -p$PORT -o GSSAPIAuthentication=no $IP
+set login $spawn_id
+expect {
+        "*yes/no"       {send "yes\n"; exp_continue}
+        "*password"     {send "$PSW\n";} #exp_continue
+}
+interact

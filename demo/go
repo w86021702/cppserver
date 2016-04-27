@@ -1,0 +1,35 @@
+#!/bin/sh
+
+HOSTLST="$HOME/etc/appsvr.lst"
+
+if [ $# -lt 1 ]
+then
+echo "Usage: `basename $0` <IP|HOSTNAME>"
+exit 1
+fi
+
+Uuser=$(grep -w "$1" $HOSTLST|awk '{print $3}')
+
+if [ $# -eq 2 ]
+then
+Uuser=$2
+fi
+
+. $HOSTLST
+
+if [ "`echo $1|grep ^10.`" == "" ]
+then
+hn=$1
+eval ip=\$${hn}
+if [ ! $ip ]
+then
+echo "Hostname not found!"
+exit 1
+fi
+echo "Connecting $ip [$hn]......"
+else
+ip=$1
+#   Uuser=$2
+echo "Connecting $ip......"
+fi
+$HOME/bin/autologin.ext $ip ls $Uuser 56000
