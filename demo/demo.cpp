@@ -3,15 +3,17 @@
 #include <stdlib.h>
 #include <cstring>
 #include <sys/socket.h>
-//#include <event.h>
 #include <event2/event.h>
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <fcntl.h>
 #include <time.h>
+#include <unistd.h>
 
 struct event_base *g_base;
 int create_client(struct event_base *ev_base, evutil_socket_t fd, struct bufferevent *bev);
+
+int handleout(const char *req, size_t len);
 
 void showUsage()
 {
@@ -64,24 +66,41 @@ int set_socket_nonblock(evutil_socket_t& fd)
 void readcb(struct bufferevent *bev, void *ptr)
 {
     printf("on read!buf:%d\n", &ptr);
-	char buf[2048];
-	while(1)
+	struct evbuffer *input = bufferevent_get_input(bev);
+	int len = evbuffer_get_length(input);
+	//包头大小未知
+	if (len < 4)
+		return ;
+
+	unsigned int code = 0;
+	size_t size = evbuffer_copyout(input, &code, sizeof(unsigned int));
+	printf("code:%d\n", code);
+	//code = ntohl(code);
+	printf("after code:%d\n", code);
+	if ( size < sizeof(unsigned int) )
 	{
-		int len = bufferevent_read(bev, buf, sizeof(buf)) ;
-		if ( len == 0 )
+		printf("log size :%u, fail\n", code);
+		return ;
+	}
+
+	char req[4096];
+	unsigned int reqLen = size + code;
+	printf("reqLen lower:%u\n", reqLen);
+	if (len >= reqLen)
+	{
+		//int removeLen = evbuffer_copyout(input, req, reqLen);
+		int removeLen = evbuffer_remove(input, req, reqLen);
+		if (-1 == removeLen)
 		{
-			printf("close client\n");
-			bufferevent_free(bev);
-			break;
+			printf("remove fail\n");
+			return ;
 		}
-		else if ( len > 0 )
-		{
-			printf("from cli : %s\n", buf);
-		}
-		else
-		{
-			break;
-		}
+		printf("remove len %d \n", removeLen);
+		handleout(req+size, reqLen - size);
+
+		//debug
+		len = evbuffer_get_length(input);
+		printf("after remove len:%d\n", len);
 	}
 }
 
@@ -168,7 +187,6 @@ int main(int argc, char** argv)
     struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
 	g_base = ev_base;
 
-    //struct event timer_ev;
     struct timeval five;
     memset(&five, 0, sizeof(five));
     five.tv_sec = 5;
@@ -186,4 +204,10 @@ int main(int argc, char** argv)
     event_base_free(ev_base);
 
     return 0;
+}
+
+int handleout(const char *req, size_t len)
+{
+	printf("handle out req:%s, len:%u\n", req, len);
+	return 0;
 }

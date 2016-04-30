@@ -58,8 +58,16 @@ int main(int argc, char** argv)
     addr.sin_family = AF_INET;
     //addr.sin_addr.s_addr = inet_addr(ip);
     int res = connect(fd, (struct sockaddr*)&addr, sizeof(addr));
-	char buf[] = "hello world";
-	write(fd, buf, sizeof(buf));
+    printf("on loop\n");
+	while(1)
+	{
+		char buf[] = "hello world";
+		int length = sizeof(buf);
+		write(fd, (char*)&length, 2);
+		write(fd, ((char*)&length) + 2, 2);
+		write(fd, buf, sizeof(buf));
+		sleep(2);
+	}
 	close(fd);
 
     return 0;
