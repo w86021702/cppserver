@@ -4,7 +4,7 @@ set (Tutorial_VERSION_MINOR 0)
 
 PROJECT(TEST_EVENTLIB)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-INCLUDE(../thirdpart/libevent)
+INCLUDE(../thirdpart/libevent/CMakeLists.txt)
 #INCLUDE_DIRECTORIES(../thirdpart/libevent/include/)
 ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 SET(SRC_LIST 

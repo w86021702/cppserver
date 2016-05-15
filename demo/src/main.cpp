@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <time.h>
 #include <unistd.h>
+#include "reactor.h"
 
 struct event_base *g_base;
 int create_client(struct event_base *ev_base, evutil_socket_t fd, struct bufferevent *bev);
@@ -220,8 +221,32 @@ int handleout(const char *req, size_t len)
 	return 0;
 }
 
-int main(int args, char** argv)
+int main(int argc, char** argv)
 {
-	test(args, argv);
+	//test(args, argv);
+    int port = 0;
+    std::string ip = "127.0.0.1";
+    for (int i = 0; i < argc; ++i)
+    {
+        if ( strcmp(argv[i], "-p") == 0 )
+        {
+            port = atoi(argv[i+1]);
+        }
+        else if ( strcmp(argv[i], "-t") == 0 )
+        {
+            ip = argv[i+1];
+        }
+    }
+
+    if ( 0 == port )
+    {
+        showUsage();
+        exit(0);
+    }
+    printf("listen port %d\n", port);
+
+	CReactor reactor;
+	reactor.OnLoop(ip, port);
+
 	return 0;
 }

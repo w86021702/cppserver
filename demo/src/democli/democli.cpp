@@ -66,7 +66,17 @@ int main(int argc, char** argv)
 		write(fd, (char*)&length, 2);
 		write(fd, ((char*)&length) + 2, 2);
 		write(fd, buf, sizeof(buf));
-		sleep(2);
+
+		char buf2[] = "bsadfjlj";
+		int length2 = sizeof(buf2);
+		write(fd, (char*)&length2, sizeof(length2));
+		write(fd, buf2, sizeof(buf2));
+		int tt = 5;
+		//if ( --tt <= 0 )
+		//{
+		//	return 0;
+		//}
+		//sleep(2);
 	}
 	close(fd);
 
