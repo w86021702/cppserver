@@ -17,6 +17,7 @@ CChannel::CChannel(struct event_base *ev_base, int fd)
 	_bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
     bufferevent_setcb(_bev, channel_readcb, NULL, NULL, this);
     bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
+	_fd = fd;
 }
 
 CChannel::~CChannel()
@@ -44,7 +45,13 @@ void CChannel::OnError()
 int CChannel::HandleOut(char* buf, unsigned int len)
 {
 	printf("###recv:%s\n", buf);
+	//解析协议
 	return 0;
+}
+
+int CChannel::GetSocketFd()
+{
+	return _fd;
 }
 
 void channel_readcb(struct bufferevent *bev, void *ptr)

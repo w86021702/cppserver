@@ -51,7 +51,7 @@ int CReactor::OnLoop(const std::string& ip, unsigned int port)
     printf("listen %d\n", listenFd);
 
     struct event_base *ev_base = event_base_new();
-    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_acceptor, ev_base);
+    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST | EV_ET, on_acceptor, ev_base);
 
     event_add(listen_ev, NULL);
 
