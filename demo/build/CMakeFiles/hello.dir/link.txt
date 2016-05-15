@@ -1,1 +1,0 @@
-/usr/local/bin/c++       CMakeFiles/hello.dir/democli.cpp.o CMakeFiles/hello.dir/demo.cpp.o CMakeFiles/hello.dir/demo1.cpp.o  -o hello -rdynamic 
