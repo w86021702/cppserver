@@ -3,9 +3,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 INCLUDE_DIRECTORIES(../thirdpart/libevent/include/)
 ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 SET(SRC_LIST 
-    src/demo.cpp
+    src/main.cpp
     )
 ADD_EXECUTABLE(demosvr ${SRC_LIST})
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-TARGET_LINK_LIBRARIES(demosvr event)
+TARGET_LINK_LIBRARIES(demosvr event pthread)
