@@ -9,14 +9,17 @@ using namespace CM;
 
 void channel_readcb(struct bufferevent *bev, void *ptr);
 void writecb(struct bufferevent *bev, void *ptr);
-void channel_(struct bufferevent *bev, void *ptr);
+void event_cb(struct bufferevent *bev, short event, void *arg);
 
 CChannel::CChannel(struct event_base *ev_base, int fd)
 {
     assert(ev_base != NULL && fd > 0);
 
 	_bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
-    bufferevent_setcb(_bev, channel_readcb, NULL, NULL, this);
+	assert(_bev);
+    bufferevent_setcb(_bev, channel_readcb, NULL, event_cb, this);
+	//设置低水位
+	bufferevent_setwatermark(_bev, EV_READ, sizeof(unsigned int), 0);
     bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
 	_fd = fd;
     _ev_base = ev_base;
@@ -117,4 +120,16 @@ void channel_readcb(struct bufferevent *bev, void *ptr)
 
 void writecb(struct bufferevent *bev, void *ptr)
 {
+}
+
+void event_cb(struct bufferevent *bev, short event, void *arg)
+{
+	if (event & BEV_EVENT_EOF)
+		printf("connection closed\n");
+	else if (event & BEV_EVENT_ERROR)
+		printf("some other error\n");
+
+	//这将自动close套接字和free读写缓冲区
+	//bufferevent_free(bev);
+	delete (CChannel *)arg;
 }
