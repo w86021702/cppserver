@@ -10,10 +10,14 @@ void on_acceptor(evutil_socket_t fd, short event, void *arg);
 
 CReactor::CReactor()
 {
+    _evBase = event_base_new();
 }
 
 CReactor::~CReactor()
 {
+	if (_evBase)
+		delete _evBase;
+	_evBase = NULL;
 }
 
 int CReactor::RegisterHandler(int handlerID, void *args)
@@ -67,6 +71,11 @@ int MakeListener(const std::string& ip, unsigned int port)
     //struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST | EV_ET, on_acceptor, ev_base);
     //event_add(listen_ev, NULL);
     return 0;
+}
+
+int CReactor::Loop()
+{
+	return 0;
 }
 
 int CReactor::OnLoop(const std::string& ip, unsigned int port)
@@ -135,4 +144,8 @@ void on_acceptor(evutil_socket_t fd, short event, void *arg)
         printf("accept create new_bufferev fd:%d\n", newFd);
         auto* channel = new CClient((event_base*)arg, newFd);
     }
+}
+void* CReactor::GetReactor() const
+{
+	return _evBase;
 }

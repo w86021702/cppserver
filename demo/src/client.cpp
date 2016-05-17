@@ -14,7 +14,7 @@ void event_cb(struct bufferevent *bev, short event, void *arg);
 CClient::CClient(struct event_base *ev_base, int fd)
     : CChannel(fd), _ev_base(ev_base)
 {
-    assert(ev_base != NULL && fd > 0);
+    assert(fd > 0);
 
 	_bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
 	assert(_bev);
@@ -133,6 +133,9 @@ void* CClient::GetReactor() const
 
 int CClient::SetReactor(void* reactor)
 {
+	_ev_base = (event_base*)reactor;
+	//event_base_set(_ev_base, _bev); 
+    bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
     return 0;
 }
 

@@ -6,10 +6,11 @@
 #include <assert.h>
 #include <string.h>
 #include "client.h"
+#include "reactor.h"
 
 using namespace CM;
 
-void acceptor_readcb(struct bufferevent *bev, void *ptr);
+void acceptor_readcb(evutil_socket_t fd, short event, void *arg);
 void acceptor_writecb(struct bufferevent *bev, void *ptr);
 void acceptor_eventcb(struct bufferevent *bev, short event, void *arg);
 
@@ -41,11 +42,15 @@ CAcceptor::CAcceptor(struct event_base *ev_base, int fd, unsigned int port)
         printf("listen fail\n");
         return ;
     }
+
+    _listen_ev = event_new(ev_base, _fd, EV_READ | EV_PERSIST | EV_ET, acceptor_readcb, this);
     printf("listen %d\n", _fd);
 }
 
 CAcceptor::~CAcceptor()
 {
+	if (_listen_ev)
+		event_free(_listen_ev);
 }
 
 int CAcceptor::HandleRead()
@@ -94,9 +99,9 @@ int CAcceptor::HandleClose()
     return 0;
 }
 
-void acceptor_readcb(struct bufferevent *bev, void *ptr)
+void acceptor_readcb(evutil_socket_t fd, short event, void *arg)
 {
-    CChannel *channel = (CChannel*)ptr;
+    CChannel *channel = (CChannel*)arg;
 	int ret = channel->HandleRead();
     if (ret != 0)
     {
@@ -112,6 +117,10 @@ void* CAcceptor::GetReactor() const
 
 int CAcceptor::SetReactor(void* reactor)
 {
+	CReactor* rea = (CReactor *) reactor;
+	_ev_base = (event_base*)rea->GetReactor();
+	event_base_set(_ev_base, _listen_ev); 
+    event_add(_listen_ev, NULL);
     return 0;
 }
 

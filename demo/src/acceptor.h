@@ -4,8 +4,8 @@
 #include "commdef.h"
 #include "channel.h"
 
-struct bufferevent;
 struct event_base;
+struct event;
 
 namespace CM{
 
@@ -25,9 +25,9 @@ public:
     void* GetReactor() const;
 
 private:
-	struct  bufferevent* _bev;
     struct event_base *_ev_base;
     unsigned int _port;
+	struct event *_listen_ev;
 };
 
 }
