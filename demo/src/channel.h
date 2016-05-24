@@ -3,25 +3,39 @@
 
 #include "commdef.h"
 
-namespace CM{
-
 struct bufferevent;
+struct event_base;
+
+namespace CM{
 
 class CChannel
 {
 public:
-	CChannel();
+	CChannel(struct event_base *ev_base, int fd);
 	~CChannel();
 
-	int HandleRead(char* buf, unsigned int len);
+	virtual int HandleRead(char* buf, unsigned int len);
 	void HandleWrite();
 	void OnError();
-	int HandleOut(char* buf, unsigned int len);
+	virtual int HandleOut(char* buf, unsigned int len);
+    int GetSocketFd();
 
 private:
 	int _fd;
-	struct  bufferevent* bev;
+	struct  bufferevent* _bev;
 };
+
+//class CAcceptor
+//{
+//public:
+//    CAcceptor();
+//    ~CAcceptor();
+//
+//    int Accept();
+//
+//private:
+//    int _fd;
+//};
 
 }
 

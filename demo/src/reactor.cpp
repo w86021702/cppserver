@@ -1,7 +1,12 @@
 #include "reactor.h"
+#include "channel.h"
+#include "event2/util.h"
+#include "event2/event.h"
+#include <string.h>
 
-void readcb(struct bufferevent *bev, void *ptr);
-void writecb(struct bufferevent *bev, void *ptr);
+using namespace CM;
+
+void on_acceptor(evutil_socket_t fd, short event, void *arg);
 
 CReactor::CReactor()
 {
@@ -11,7 +16,7 @@ CReactor::~CReactor()
 {
 }
 
-void CReactor::OnLoop(const std::string& ip, unsigned int port)
+int CReactor::OnLoop(const std::string& ip, unsigned int port)
 {
     evutil_socket_t listenFd = socket(AF_INET, SOCK_STREAM, 0);
     if ( listenFd < 0 )
@@ -26,7 +31,7 @@ void CReactor::OnLoop(const std::string& ip, unsigned int port)
     seraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     seraddr.sin_port = htons(port);
 
-    if ( 0 != set_socket_nonblock(listenFd) )
+    if ( 0 != evutil_make_socket_nonblocking(listenFd) )
     {
         printf("socket error\n");
         return -1;
@@ -46,8 +51,7 @@ void CReactor::OnLoop(const std::string& ip, unsigned int port)
     printf("listen %d\n", listenFd);
 
     struct event_base *ev_base = event_base_new();
-    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
-	g_base = ev_base;
+    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_acceptor, ev_base);
 
     event_add(listen_ev, NULL);
 
@@ -58,49 +62,23 @@ void CReactor::OnLoop(const std::string& ip, unsigned int port)
     //释放ev_base所有事件
     event_base_free(ev_base);
 
+    return 0;
 }
 
-void readcb(struct bufferevent *bev, void *ptr)
+void on_acceptor(evutil_socket_t fd, short event, void *arg)
 {
-    printf("on read!buf:\n");
-	struct evbuffer *input = bufferevent_get_input(bev);
-	int len = evbuffer_get_length(input);
-	//包头大小未知
-	if (len < sizeof(unsigned int))
-		return ;
+    printf("on accept\n");
+    struct sockaddr_in addr;
+    socklen_t len = 0;
+    while (1)
+    {
+        evutil_socket_t newFd = accept(fd, (struct sockaddr*)&addr, &len);
+        if (newFd <= 0)
+        {
+            break;
+        }
 
-	unsigned int code = 0;
-	size_t size = evbuffer_copyout(input, &code, sizeof(unsigned int));
-	printf("code:%d\n", code);
-	//code = ntohl(code);
-	printf("after code:%d\n", code);
-	if ( size < sizeof(unsigned int) )
-	{
-		printf("log size :%u, fail\n", code);
-		return ;
-	}
-
-	char req[4096];
-	unsigned int reqLen = size + code;
-	printf("reqLen lower:%u\n", reqLen);
-	if (len >= reqLen)
-	{
-		//int removeLen = evbuffer_copyout(input, req, reqLen);
-		int removeLen = evbuffer_remove(input, req, reqLen);
-		if (-1 == removeLen)
-		{
-			printf("remove fail\n");
-			return ;
-		}
-		printf("remove len %d \n", removeLen);
-		//handleout(req+size, reqLen - size);
-
-		//debug
-		len = evbuffer_get_length(input);
-		printf("after remove len:%d\n", len);
-	}
-}
-
-void writecb(struct bufferevent *bev, void *ptr)
-{
+        printf("accept create new_bufferev fd:%d\n", newFd);
+        auto* channel = new CChannel((event_base*)arg, newFd);
+    }
 }

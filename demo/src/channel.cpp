@@ -1,17 +1,31 @@
 #include "channel.h"
+#include "event2/util.h"
+#include "event2/event.h"
+#include "event2/buffer.h"
 #include "event2/bufferevent.h"
+#include <assert.h>
 
 using namespace CM;
 
-void readcb(struct bufferevent *bev, void *ptr);
+void channel_readcb(struct bufferevent *bev, void *ptr);
 void writecb(struct bufferevent *bev, void *ptr);
 
-CChannel::CChannel()
+CChannel::CChannel(struct event_base *ev_base, int fd)
 {
+    assert(ev_base != NULL && fd > 0);
+
+	_bev = bufferevent_socket_new(ev_base, fd, BEV_OPT_CLOSE_ON_FREE);
+    bufferevent_setcb(_bev, channel_readcb, NULL, NULL, NULL);
+    bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
 }
 
 CChannel::~CChannel()
 {
+    if (_bev != NULL)
+    {
+        delete _bev;
+        _bev = NULL;
+    }
 }
 
 int CChannel::HandleRead(char* buf, unsigned int len)
@@ -32,11 +46,11 @@ int CChannel::HandleOut(char* buf, unsigned int len)
 	return 0;
 }
 
-void readcb(struct bufferevent *bev, void *ptr)
+void channel_readcb(struct bufferevent *bev, void *ptr)
 {
     printf("on read!buf:\n");
 	struct evbuffer *input = bufferevent_get_input(bev);
-	int len = evbuffer_get_length(input);
+	unsigned int len = evbuffer_get_length(input);
 	//包头大小未知
 	if (len < 4)
 		return ;
@@ -65,7 +79,12 @@ void readcb(struct bufferevent *bev, void *ptr)
 			return ;
 		}
 		printf("remove len %d \n", removeLen);
-		handleout(req+size, reqLen - size);
+        CChannel *channel = (CChannel*)ptr;
+		int ret = channel->HandleOut(req+size, reqLen - size);
+        if ( 0 != ret )
+        {
+            printf("%s HandleOut error\n", __func__ );
+        }
 
 		//debug
 		len = evbuffer_get_length(input);
@@ -76,4 +95,3 @@ void readcb(struct bufferevent *bev, void *ptr)
 void writecb(struct bufferevent *bev, void *ptr)
 {
 }
-

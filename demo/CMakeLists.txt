@@ -9,6 +9,8 @@ INCLUDE(../thirdpart/libevent)
 ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 SET(SRC_LIST 
     src/main.cpp
+    src/channel.cpp
+    src/reactor.cpp
     )
 ADD_EXECUTABLE(demosvr ${SRC_LIST})
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

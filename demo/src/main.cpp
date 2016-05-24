@@ -36,14 +36,21 @@ void on_accept(evutil_socket_t fd, short event, void *arg)
     printf("on accept\n");
     struct sockaddr_in addr;
     socklen_t len = 0;
-    evutil_socket_t newFd = accept(fd, (struct sockaddr*)&addr, &len);
-    printf("accept create new_bufferev fd:%d\n", newFd);
+    while (1)
+    {
+        evutil_socket_t newFd = accept(fd, (struct sockaddr*)&addr, &len);
+        if (newFd <= 0)
+        {
+            break;
+        }
 
-	struct bufferevent *bev;
-	if ( 0 != create_client(g_base, newFd, bev) )
-	{
-		printf("make socket fail\n");
-	}
+        printf("accept create new_bufferev fd:%d\n", newFd);
+        struct bufferevent *bev;
+        if ( 0 != create_client(g_base, newFd, bev) )
+        {
+            printf("make socket fail\n");
+        }
+    }
 }
 
 void on_read(evutil_socket_t fd, short event, void *arg)
@@ -68,7 +75,7 @@ void readcb(struct bufferevent *bev, void *ptr)
 {
     printf("on read!buf:\n");
 	struct evbuffer *input = bufferevent_get_input(bev);
-	int len = evbuffer_get_length(input);
+	unsigned int len = evbuffer_get_length(input);
 	//包头大小未知
 	if (len < 4)
 		return ;
@@ -185,7 +192,7 @@ int test(int argc, char** argv)
     struct event_base *ev_base = event_base_new();
     //struct event ev;
     //event_set(&ev, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
-    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST, on_accept, NULL);
+    struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST | EV_ET, on_accept, NULL);
 	g_base = ev_base;
 
     struct timeval five;
@@ -209,7 +216,7 @@ int test(int argc, char** argv)
 
 int handleout(const char *req, size_t len)
 {
-	printf("handle out req:%s, len:%d\n", req, len);
+	printf("handle out req:%s, len:%u\n", req, len);
 	return 0;
 }
 
