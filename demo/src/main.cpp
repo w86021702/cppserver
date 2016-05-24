@@ -66,7 +66,7 @@ int set_socket_nonblock(evutil_socket_t& fd)
 
 void readcb(struct bufferevent *bev, void *ptr)
 {
-    printf("on read!buf:%d\n", &ptr);
+    printf("on read!buf:\n");
 	struct evbuffer *input = bufferevent_get_input(bev);
 	int len = evbuffer_get_length(input);
 	//包头大小未知
@@ -127,7 +127,7 @@ int create_client(struct event_base *ev_base, evutil_socket_t fd, struct buffere
 	return 0;
 }
 
-int main(int argc, char** argv)
+int test(int argc, char** argv)
 {
     int port = 0;
     std::string ip = "127.0.0.1";
@@ -209,6 +209,12 @@ int main(int argc, char** argv)
 
 int handleout(const char *req, size_t len)
 {
-	printf("handle out req:%s, len:%u\n", req, len);
+	printf("handle out req:%s, len:%d\n", req, len);
+	return 0;
+}
+
+int main(int args, char** argv)
+{
+	test(args, argv);
 	return 0;
 }
