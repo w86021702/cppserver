@@ -9,6 +9,7 @@ using namespace CM;
 
 void channel_readcb(struct bufferevent *bev, void *ptr);
 void writecb(struct bufferevent *bev, void *ptr);
+void channel_(struct bufferevent *bev, void *ptr);
 
 CChannel::CChannel(struct event_base *ev_base, int fd)
 {
@@ -18,13 +19,14 @@ CChannel::CChannel(struct event_base *ev_base, int fd)
     bufferevent_setcb(_bev, channel_readcb, NULL, NULL, this);
     bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
 	_fd = fd;
+    _ev_base = ev_base;
 }
 
 CChannel::~CChannel()
 {
     if (_bev != NULL)
     {
-        delete _bev;
+        bufferevent_free(_bev);
         _bev = NULL;
     }
 }
@@ -52,6 +54,11 @@ int CChannel::HandleOut(char* buf, unsigned int len)
 int CChannel::GetSocketFd()
 {
 	return _fd;
+}
+
+void CChannel::HandleClose()
+{
+    //delete this;
 }
 
 void channel_readcb(struct bufferevent *bev, void *ptr)

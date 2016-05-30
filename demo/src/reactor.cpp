@@ -16,6 +16,16 @@ CReactor::~CReactor()
 {
 }
 
+int CReactor::RegisterHandler(int handlerID, int event, void *args)
+{
+    return 0;
+}
+
+int CReactor::RemoveHandler(int handlerID)
+{
+    return 0;
+}
+
 int CReactor::OnLoop(const std::string& ip, unsigned int port)
 {
     evutil_socket_t listenFd = socket(AF_INET, SOCK_STREAM, 0);

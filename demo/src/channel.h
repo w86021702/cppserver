@@ -18,11 +18,13 @@ public:
 	void HandleWrite();
 	void OnError();
 	virtual int HandleOut(char* buf, unsigned int len);
+    virtual void HandleClose();
     int GetSocketFd();
 
 private:
 	int _fd;
 	struct  bufferevent* _bev;
+    struct event_base *_ev_base;
 };
 
 //class CAcceptor

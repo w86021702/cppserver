@@ -9,6 +9,8 @@ public:
 	CReactor();
 	~CReactor();
 
+    int RegisterHandler(int handlerID, int event, void *args);
+    int RemoveHandler(int handlerID);
 	int OnLoop(const std::string& ip = "127.0.0.1", unsigned int port = 9094);
 
 private:

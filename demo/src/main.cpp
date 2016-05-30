@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <fcntl.h>
 #include "reactor.h"
 
 struct event_base *g_base;
@@ -19,7 +21,7 @@ int handleout(const char *req, size_t len);
 
 void showUsage()
 {
-    printf("-t ip -p port\n");
+    printf("[-t ip] <-p port> [-d] \n");
 }
 
 void timer_cb(evutil_socket_t fd, short event, void* arg)
@@ -226,6 +228,7 @@ int main(int argc, char** argv)
 	//test(args, argv);
     int port = 0;
     std::string ip = "127.0.0.1";
+    bool deamon = false;
     for (int i = 0; i < argc; ++i)
     {
         if ( strcmp(argv[i], "-p") == 0 )
@@ -236,6 +239,10 @@ int main(int argc, char** argv)
         {
             ip = argv[i+1];
         }
+        else if ( strcmp(argv[i], "-d") == 0 )
+        {
+            deamon = true;
+        }
     }
 
     if ( 0 == port )
@@ -244,6 +251,25 @@ int main(int argc, char** argv)
         exit(0);
     }
     printf("listen port %d\n", port);
+
+    if (deamon)
+    {
+        if ( fork() >  0 )
+        {
+            //parent
+            exit(0);
+        }
+
+        close(0);
+        close(1);
+        close(2);
+        int fd = open("/dev/null", O_WRONLY);
+        dup2(fd, 0);
+        dup2(fd, 1);
+        dup2(fd, 2);
+
+        setsid();
+    }
 
 	CReactor reactor;
 	reactor.OnLoop(ip, port);
