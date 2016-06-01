@@ -16,8 +16,11 @@ CReactor::~CReactor()
 {
 }
 
-int CReactor::RegisterHandler(int handlerID, int event, void *args)
+int CReactor::RegisterHandler(int handlerID, void *args)
 {
+    auto* channel = (CChannel*)args;
+    //channel->
+    
     return 0;
 }
 

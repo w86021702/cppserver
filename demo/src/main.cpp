@@ -254,7 +254,7 @@ int main(int argc, char** argv)
 
     if (deamon)
     {
-        if ( fork() >  0 )
+        if ( fork() > 0 )
         {
             //parent
             exit(0);
@@ -264,7 +264,7 @@ int main(int argc, char** argv)
         close(1);
         close(2);
         int fd = open("/dev/null", O_WRONLY);
-        dup2(fd, 0);
+        //dup2(fd, 0);
         dup2(fd, 1);
         dup2(fd, 2);
 

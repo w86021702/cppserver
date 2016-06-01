@@ -12,6 +12,7 @@ void writecb(struct bufferevent *bev, void *ptr);
 void event_cb(struct bufferevent *bev, short event, void *arg);
 
 CChannel::CChannel(struct event_base *ev_base, int fd)
+    :_fd(fd), _ev_base(ev_base)
 {
     assert(ev_base != NULL && fd > 0);
 
@@ -21,8 +22,6 @@ CChannel::CChannel(struct event_base *ev_base, int fd)
 	//设置低水位
 	bufferevent_setwatermark(_bev, EV_READ, sizeof(unsigned int), 0);
     bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
-	_fd = fd;
-    _ev_base = ev_base;
 }
 
 CChannel::~CChannel()

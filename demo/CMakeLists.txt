@@ -11,6 +11,8 @@ SET(SRC_LIST
     src/main.cpp
     src/channel.cpp
     src/reactor.cpp
+    src/cm_event_handler.cpp
+    src/worker.cpp
     )
 ADD_EXECUTABLE(demosvr ${SRC_LIST})
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
