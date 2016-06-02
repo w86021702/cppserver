@@ -138,6 +138,30 @@ src/channel.cpp.s:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/channel.cpp.s
 .PHONY : src/channel.cpp.s
 
+src/client.o: src/client.cpp.o
+.PHONY : src/client.o
+
+# target to build an object file
+src/client.cpp.o:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/client.cpp.o
+.PHONY : src/client.cpp.o
+
+src/client.i: src/client.cpp.i
+.PHONY : src/client.i
+
+# target to preprocess a source file
+src/client.cpp.i:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/client.cpp.i
+.PHONY : src/client.cpp.i
+
+src/client.s: src/client.cpp.s
+.PHONY : src/client.s
+
+# target to generate assembly for a file
+src/client.cpp.s:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/client.cpp.s
+.PHONY : src/client.cpp.s
+
 src/cm_event_handler.o: src/cm_event_handler.cpp.o
 .PHONY : src/cm_event_handler.o
 
@@ -246,6 +270,9 @@ help:
 	@echo "... src/channel.o"
 	@echo "... src/channel.i"
 	@echo "... src/channel.s"
+	@echo "... src/client.o"
+	@echo "... src/client.i"
+	@echo "... src/client.s"
 	@echo "... src/cm_event_handler.o"
 	@echo "... src/cm_event_handler.i"
 	@echo "... src/cm_event_handler.s"

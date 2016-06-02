@@ -11,33 +11,21 @@ namespace CM{
 class CChannel
 {
 public:
-	CChannel(struct event_base *ev_base, int fd);
+	CChannel(int fd);
 	~CChannel();
 
-	virtual int HandleRead(char* buf, unsigned int len);
-	void HandleWrite();
-	void OnError();
+	virtual int HandleRead() = 0;
+	virtual int HandleWrite() = 0;
+	virtual void OnError() = 0;
 	virtual int HandleOut(char* buf, unsigned int len);
-    virtual void HandleClose();
+    virtual int HandleClose();
     int GetSocketFd();
+    virtual int SetReactor(void* reactor) = 0;
+    void* GetReactor() const;
 
-private:
+protected:
 	int _fd;
-	struct  bufferevent* _bev;
-    struct event_base *_ev_base;
 };
-
-//class CAcceptor
-//{
-//public:
-//    CAcceptor();
-//    ~CAcceptor();
-//
-//    int Accept();
-//
-//private:
-//    int _fd;
-//};
 
 }
 
