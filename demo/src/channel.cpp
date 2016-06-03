@@ -39,6 +39,7 @@ int CChannel::GetSocketFd()
 int CChannel::HandleClose()
 {
     //delete this;
+    return 0;
 }
 
 //void channel_readcb(struct bufferevent *bev, void *ptr)

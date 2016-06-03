@@ -149,7 +149,7 @@ void event_cb(struct bufferevent *bev, short event, void *arg)
 
 	//这将自动close套接字和free读写缓冲区
 	//bufferevent_free(bev);
-	//delete (CClient *)arg;
+	delete (CClient *)arg;
 }
 
 ////////////////////////////////////////////////////////////////////

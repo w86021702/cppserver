@@ -12,7 +12,7 @@ class CChannel
 {
 public:
 	CChannel(int fd);
-	~CChannel();
+	virtual ~CChannel();
 
 	virtual int HandleRead() = 0;
 	virtual int HandleWrite() = 0;

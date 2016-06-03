@@ -19,6 +19,7 @@ CReactor::~CReactor()
 int CReactor::RegisterHandler(int handlerID, void *args)
 {
     auto* channel = (CChannel*)args;
+    channel->SetReactor(this);
     //channel->
     
     return 0;
