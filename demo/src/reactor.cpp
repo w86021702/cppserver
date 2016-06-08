@@ -1,5 +1,5 @@
 #include "reactor.h"
-#include "channel.h"
+#include "client.h"
 #include "event2/util.h"
 #include "event2/event.h"
 #include <string.h>
@@ -133,6 +133,6 @@ void on_acceptor(evutil_socket_t fd, short event, void *arg)
         }
 
         printf("accept create new_bufferev fd:%d\n", newFd);
-        //auto* channel = new CChannel((event_base*)arg, newFd);
+        auto* channel = new CClient((event_base*)arg, newFd);
     }
 }
