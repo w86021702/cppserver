@@ -114,6 +114,30 @@ demosvr/fast:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/build
 .PHONY : demosvr/fast
 
+src/acceptor.o: src/acceptor.cpp.o
+.PHONY : src/acceptor.o
+
+# target to build an object file
+src/acceptor.cpp.o:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/acceptor.cpp.o
+.PHONY : src/acceptor.cpp.o
+
+src/acceptor.i: src/acceptor.cpp.i
+.PHONY : src/acceptor.i
+
+# target to preprocess a source file
+src/acceptor.cpp.i:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/acceptor.cpp.i
+.PHONY : src/acceptor.cpp.i
+
+src/acceptor.s: src/acceptor.cpp.s
+.PHONY : src/acceptor.s
+
+# target to generate assembly for a file
+src/acceptor.cpp.s:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/acceptor.cpp.s
+.PHONY : src/acceptor.cpp.s
+
 src/channel.o: src/channel.cpp.o
 .PHONY : src/channel.o
 
@@ -267,6 +291,9 @@ help:
 	@echo "... demosvr"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... src/acceptor.o"
+	@echo "... src/acceptor.i"
+	@echo "... src/acceptor.s"
 	@echo "... src/channel.o"
 	@echo "... src/channel.i"
 	@echo "... src/channel.s"
