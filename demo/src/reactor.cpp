@@ -16,7 +16,7 @@ CReactor::CReactor()
 CReactor::~CReactor()
 {
 	if (_evBase)
-		delete _evBase;
+		event_base_free(_evBase);
 	_evBase = NULL;
 }
 
@@ -66,16 +66,20 @@ int MakeListener(const std::string& ip, unsigned int port)
         printf("listen fail\n");
         return -1;
     }
-    printf("listen %d\n", listenFd);
+    printf("make listen11 %d\n", listenFd);
 
     //struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST | EV_ET, on_acceptor, ev_base);
     //event_add(listen_ev, NULL);
     return 0;
 }
 
-int CReactor::Loop()
+int CReactor::OnLoop()
 {
-	return 0;
+    event_base_loop(_evBase, 0x04);
+
+    //释放ev_base所有事件
+    event_base_free(_evBase);
+    return 0;
 }
 
 int CReactor::OnLoop(const std::string& ip, unsigned int port)
@@ -110,7 +114,7 @@ int CReactor::OnLoop(const std::string& ip, unsigned int port)
         printf("listen fail\n");
         return -1;
     }
-    printf("listen %d\n", listenFd);
+    printf("loop listen %d\n", listenFd);
 
     struct event_base *ev_base = event_base_new();
     struct event *listen_ev = event_new(ev_base, listenFd, EV_READ | EV_PERSIST | EV_ET, on_acceptor, ev_base);

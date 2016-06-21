@@ -13,7 +13,8 @@ public:
 
     int RegisterHandler(int handlerID, void *args);
     int RemoveHandler(int handlerID);
-	int OnLoop(const std::string& ip = "127.0.0.1", unsigned int port = 9094);
+	int OnLoop();
+	int OnLoop(const std::string& ip, unsigned int port = 9094);
 	int Loop();
 	void* GetReactor() const;
 

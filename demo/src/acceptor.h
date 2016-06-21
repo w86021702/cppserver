@@ -12,7 +12,7 @@ namespace CM{
 class CAcceptor : public CChannel
 {
 public:
-	CAcceptor(struct event_base *ev_base, int fd, unsigned int port);
+	CAcceptor(int fd, unsigned int port);
 	~CAcceptor();
 
 	virtual int HandleRead();

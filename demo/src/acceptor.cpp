@@ -14,11 +14,9 @@ void acceptor_readcb(evutil_socket_t fd, short event, void *arg);
 void acceptor_writecb(struct bufferevent *bev, void *ptr);
 void acceptor_eventcb(struct bufferevent *bev, short event, void *arg);
 
-CAcceptor::CAcceptor(struct event_base *ev_base, int fd, unsigned int port)
-    : CChannel(fd), _ev_base(ev_base), _port(port)
+CAcceptor::CAcceptor(int fd, unsigned int port)
+    : CChannel(fd)
 {
-    assert(ev_base != NULL && fd > 0);
-
     sockaddr_in seraddr;
     memset(&seraddr, 0, sizeof(seraddr));
     seraddr.sin_family = AF_INET;
@@ -43,8 +41,7 @@ CAcceptor::CAcceptor(struct event_base *ev_base, int fd, unsigned int port)
         return ;
     }
 
-    _listen_ev = event_new(ev_base, _fd, EV_READ | EV_PERSIST | EV_ET, acceptor_readcb, this);
-    printf("listen %d\n", _fd);
+    printf("printf listen  %d\n", _fd);
 }
 
 CAcceptor::~CAcceptor()
@@ -119,6 +116,7 @@ int CAcceptor::SetReactor(void* reactor)
 {
 	CReactor* rea = (CReactor *) reactor;
 	_ev_base = (event_base*)rea->GetReactor();
+    _listen_ev = event_new(_ev_base, _fd, EV_READ | EV_PERSIST | EV_ET, acceptor_readcb, this);
 	event_base_set(_ev_base, _listen_ev); 
     event_add(_listen_ev, NULL);
     return 0;

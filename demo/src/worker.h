@@ -12,6 +12,7 @@ public:
     pid_t GetPid();
 
     bool start();
+    bool run();
 
 private:
 

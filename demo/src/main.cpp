@@ -13,6 +13,9 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include "reactor.h"
+#include "acceptor.h"
+
+using namespace CM;
 
 struct event_base *g_base;
 int create_client(struct event_base *ev_base, evutil_socket_t fd, struct bufferevent *bev);
@@ -190,7 +193,7 @@ int test(int argc, char** argv)
         printf("listen fail\n");
         return -1;
     }
-    printf("listen %d\n", listenFd);
+    printf("test listen %d\n", listenFd);
 
     struct event_base *ev_base = event_base_new();
     //struct event ev;
@@ -271,8 +274,14 @@ int main(int argc, char** argv)
         setsid();
     }
 
-	CReactor reactor;
-	reactor.OnLoop(ip, port);
+	//CReactor reactor;
+	//reactor.OnLoop(ip, port);
+    int listenFd = socket(AF_INET, SOCK_STREAM, 0);
+    CAcceptor acceptor(listenFd, port);
+
+    CReactor reactor;
+    reactor.RegisterHandler(listenFd, &acceptor);
+    reactor.OnLoop();
 
 	return 0;
 }
