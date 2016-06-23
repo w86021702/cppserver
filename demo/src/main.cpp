@@ -236,11 +236,11 @@ int main(int argc, char** argv)
     {
         if ( strcmp(argv[i], "-p") == 0 )
         {
-            port = atoi(argv[i+1]);
+            port = atoi(argv[++i]);
         }
         else if ( strcmp(argv[i], "-t") == 0 )
         {
-            ip = argv[i+1];
+            ip = argv[++i];
         }
         else if ( strcmp(argv[i], "-d") == 0 )
         {

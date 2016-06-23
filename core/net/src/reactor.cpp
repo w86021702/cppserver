@@ -127,7 +127,7 @@ int CReactor::OnLoop(const std::string& ip, unsigned int port)
 
     //释放ev_base所有事件
     event_base_free(ev_base);
-    delete listen_ev;
+    event_free(listen_ev);
 
     return 0;
 }
@@ -147,6 +147,7 @@ void on_acceptor(evutil_socket_t fd, short event, void *arg)
 
         printf("accept create new_bufferev fd:%d\n", newFd);
         auto* channel = new CClient((event_base*)arg, newFd);
+        //set reactor
     }
 }
 void* CReactor::GetReactor() const
