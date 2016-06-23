@@ -4,6 +4,7 @@
 #include "event2/buffer.h"
 #include "event2/bufferevent.h"
 #include <assert.h>
+#include "reactor.h"
 
 using namespace CM;
 
@@ -21,7 +22,7 @@ CClient::CClient(struct event_base *ev_base, int fd)
     bufferevent_setcb(_bev, channel_readcb, NULL, event_cb, this);
 	//设置低水位
 	bufferevent_setwatermark(_bev, EV_READ, sizeof(unsigned int), 0);
-    bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
+    //bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
 }
 
 CClient::~CClient()
@@ -133,7 +134,9 @@ void* CClient::GetReactor() const
 
 int CClient::SetReactor(void* reactor)
 {
-	_ev_base = (event_base*)reactor;
+	//_ev_base = (event_base*)reactor;
+	CReactor* rea = (CReactor *) reactor;
+	_ev_base = (event_base*)rea->GetReactor();
 	//event_base_set(_ev_base, _bev); 
     bufferevent_enable(_bev, EV_READ | EV_ET | EV_PERSIST);
     return 0;

@@ -28,6 +28,7 @@ private:
     struct event_base *_ev_base;
     unsigned int _port;
 	struct event *_listen_ev;
+    void *_reactor;
 };
 
 }

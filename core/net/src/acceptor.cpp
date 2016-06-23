@@ -65,7 +65,7 @@ int CAcceptor::HandleRead()
 
         printf("accept create new_bufferev fd:%d\n", newFd);
         auto* channel = new CClient(_ev_base, newFd);
-        //channel->SetReactor();
+        channel->SetReactor(_reactor);
     }
     return 0;
 }
@@ -116,6 +116,7 @@ void* CAcceptor::GetReactor() const
 int CAcceptor::SetReactor(void* reactor)
 {
 	CReactor* rea = (CReactor *) reactor;
+    _reactor = reactor;
 	_ev_base = (event_base*)rea->GetReactor();
     _listen_ev = event_new(_ev_base, _fd, EV_READ | EV_PERSIST | EV_ET, acceptor_readcb, this);
 	event_base_set(_ev_base, _listen_ev); 
