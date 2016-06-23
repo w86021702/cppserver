@@ -102,19 +102,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named corenet
-
-# Build rule for target.
-corenet: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 corenet
-.PHONY : corenet
-
-# fast build rule for target.
-corenet/fast:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/build
-.PHONY : corenet/fast
-
-#=============================================================================
 # Target rules for targets named demosvr
 
 # Build rule for target.
@@ -126,102 +113,6 @@ demosvr: cmake_check_build_system
 demosvr/fast:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/build
 .PHONY : demosvr/fast
-
-src/acceptor.o: src/acceptor.cpp.o
-.PHONY : src/acceptor.o
-
-# target to build an object file
-src/acceptor.cpp.o:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/acceptor.cpp.o
-.PHONY : src/acceptor.cpp.o
-
-src/acceptor.i: src/acceptor.cpp.i
-.PHONY : src/acceptor.i
-
-# target to preprocess a source file
-src/acceptor.cpp.i:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/acceptor.cpp.i
-.PHONY : src/acceptor.cpp.i
-
-src/acceptor.s: src/acceptor.cpp.s
-.PHONY : src/acceptor.s
-
-# target to generate assembly for a file
-src/acceptor.cpp.s:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/acceptor.cpp.s
-.PHONY : src/acceptor.cpp.s
-
-src/channel.o: src/channel.cpp.o
-.PHONY : src/channel.o
-
-# target to build an object file
-src/channel.cpp.o:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/channel.cpp.o
-.PHONY : src/channel.cpp.o
-
-src/channel.i: src/channel.cpp.i
-.PHONY : src/channel.i
-
-# target to preprocess a source file
-src/channel.cpp.i:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/channel.cpp.i
-.PHONY : src/channel.cpp.i
-
-src/channel.s: src/channel.cpp.s
-.PHONY : src/channel.s
-
-# target to generate assembly for a file
-src/channel.cpp.s:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/channel.cpp.s
-.PHONY : src/channel.cpp.s
-
-src/client.o: src/client.cpp.o
-.PHONY : src/client.o
-
-# target to build an object file
-src/client.cpp.o:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/client.cpp.o
-.PHONY : src/client.cpp.o
-
-src/client.i: src/client.cpp.i
-.PHONY : src/client.i
-
-# target to preprocess a source file
-src/client.cpp.i:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/client.cpp.i
-.PHONY : src/client.cpp.i
-
-src/client.s: src/client.cpp.s
-.PHONY : src/client.s
-
-# target to generate assembly for a file
-src/client.cpp.s:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/client.cpp.s
-.PHONY : src/client.cpp.s
-
-src/cm_event_handler.o: src/cm_event_handler.cpp.o
-.PHONY : src/cm_event_handler.o
-
-# target to build an object file
-src/cm_event_handler.cpp.o:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/cm_event_handler.cpp.o
-.PHONY : src/cm_event_handler.cpp.o
-
-src/cm_event_handler.i: src/cm_event_handler.cpp.i
-.PHONY : src/cm_event_handler.i
-
-# target to preprocess a source file
-src/cm_event_handler.cpp.i:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/cm_event_handler.cpp.i
-.PHONY : src/cm_event_handler.cpp.i
-
-src/cm_event_handler.s: src/cm_event_handler.cpp.s
-.PHONY : src/cm_event_handler.s
-
-# target to generate assembly for a file
-src/cm_event_handler.cpp.s:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/cm_event_handler.cpp.s
-.PHONY : src/cm_event_handler.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -246,30 +137,6 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
-
-src/reactor.o: src/reactor.cpp.o
-.PHONY : src/reactor.o
-
-# target to build an object file
-src/reactor.cpp.o:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/reactor.cpp.o
-.PHONY : src/reactor.cpp.o
-
-src/reactor.i: src/reactor.cpp.i
-.PHONY : src/reactor.i
-
-# target to preprocess a source file
-src/reactor.cpp.i:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/reactor.cpp.i
-.PHONY : src/reactor.cpp.i
-
-src/reactor.s: src/reactor.cpp.s
-.PHONY : src/reactor.s
-
-# target to generate assembly for a file
-src/reactor.cpp.s:
-	$(MAKE) -f CMakeFiles/corenet.dir/build.make CMakeFiles/corenet.dir/src/reactor.cpp.s
-.PHONY : src/reactor.cpp.s
 
 src/worker.o: src/worker.cpp.o
 .PHONY : src/worker.o
@@ -301,28 +168,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... corenet"
 	@echo "... demosvr"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... src/acceptor.o"
-	@echo "... src/acceptor.i"
-	@echo "... src/acceptor.s"
-	@echo "... src/channel.o"
-	@echo "... src/channel.i"
-	@echo "... src/channel.s"
-	@echo "... src/client.o"
-	@echo "... src/client.i"
-	@echo "... src/client.s"
-	@echo "... src/cm_event_handler.o"
-	@echo "... src/cm_event_handler.i"
-	@echo "... src/cm_event_handler.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/reactor.o"
-	@echo "... src/reactor.i"
-	@echo "... src/reactor.s"
 	@echo "... src/worker.o"
 	@echo "... src/worker.i"
 	@echo "... src/worker.s"
