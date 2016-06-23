@@ -1,0 +1,11 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(CORE)
+#Set project root directory.
+SET(PROJECT_ROOT_DIRECTORY "/home/godman/webpoj/cppserver")
+
+ADD_SUBDIRECTORY(./net)
+ADD_SUBDIRECTORY(./dao)
+
+MESSAGE(STATUS "Project dir :" ${PROJECT_BINARY_DIR})
+MESSAGE(STATUS "source Project dir :" ${CMAKE_SOURCE_DIR})

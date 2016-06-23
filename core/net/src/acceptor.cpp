@@ -65,6 +65,7 @@ int CAcceptor::HandleRead()
 
         printf("accept create new_bufferev fd:%d\n", newFd);
         auto* channel = new CClient(_ev_base, newFd);
+        //channel->SetReactor();
     }
     return 0;
 }

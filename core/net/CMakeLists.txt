@@ -5,13 +5,20 @@ PROJECT(CORE_NET_LIB)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 
+INCLUDE_DIRECTORIES(${PROJECT_ROOT_DIRECTORY}/core/net/)
+
 SET(SRC_LIST 
-    src/channel.cpp
-    src/reactor.cpp
-    src/cm_event_handler.cpp
-    src/acceptor.cpp
-    src/client.cpp
+    ${PROJECT_BINARY_DIR}/src/channel.cpp
+    ${PROJECT_BINARY_DIR}/src/reactor.cpp
+    ${PROJECT_BINARY_DIR}/src/cm_event_handler.cpp
+    ${PROJECT_BINARY_DIR}/src/acceptor.cpp
+    ${PROJECT_BINARY_DIR}/src/client.cpp
     )
+
+MESSAGE(STATUS "src list dir :" ${SRC_LIST})
 ADD_LIBRARY(corenet STATIC ${SRC_LIST})
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+
+MESSAGE(STATUS "Net Project dir :" ${PROJECT_BINARY_DIR})
+MESSAGE(STATUS "Net source Project dir :" ${CMAKE_SOURCE_DIR})
