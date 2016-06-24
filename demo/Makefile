@@ -102,6 +102,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named democli
+
+# Build rule for target.
+democli: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 democli
+.PHONY : democli
+
+# fast build rule for target.
+democli/fast:
+	$(MAKE) -f CMakeFiles/democli.dir/build.make CMakeFiles/democli.dir/build
+.PHONY : democli/fast
+
+#=============================================================================
 # Target rules for targets named demosvr
 
 # Build rule for target.
@@ -113,6 +126,30 @@ demosvr: cmake_check_build_system
 demosvr/fast:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/build
 .PHONY : demosvr/fast
+
+src/democli/democli.o: src/democli/democli.cpp.o
+.PHONY : src/democli/democli.o
+
+# target to build an object file
+src/democli/democli.cpp.o:
+	$(MAKE) -f CMakeFiles/democli.dir/build.make CMakeFiles/democli.dir/src/democli/democli.cpp.o
+.PHONY : src/democli/democli.cpp.o
+
+src/democli/democli.i: src/democli/democli.cpp.i
+.PHONY : src/democli/democli.i
+
+# target to preprocess a source file
+src/democli/democli.cpp.i:
+	$(MAKE) -f CMakeFiles/democli.dir/build.make CMakeFiles/democli.dir/src/democli/democli.cpp.i
+.PHONY : src/democli/democli.cpp.i
+
+src/democli/democli.s: src/democli/democli.cpp.s
+.PHONY : src/democli/democli.s
+
+# target to generate assembly for a file
+src/democli/democli.cpp.s:
+	$(MAKE) -f CMakeFiles/democli.dir/build.make CMakeFiles/democli.dir/src/democli/democli.cpp.s
+.PHONY : src/democli/democli.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -137,6 +174,30 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/test.pb.o: src/test.pb.cc.o
+.PHONY : src/test.pb.o
+
+# target to build an object file
+src/test.pb.cc.o:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.o
+.PHONY : src/test.pb.cc.o
+
+src/test.pb.i: src/test.pb.cc.i
+.PHONY : src/test.pb.i
+
+# target to preprocess a source file
+src/test.pb.cc.i:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.i
+.PHONY : src/test.pb.cc.i
+
+src/test.pb.s: src/test.pb.cc.s
+.PHONY : src/test.pb.s
+
+# target to generate assembly for a file
+src/test.pb.cc.s:
+	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.s
+.PHONY : src/test.pb.cc.s
 
 src/worker.o: src/worker.cpp.o
 .PHONY : src/worker.o
@@ -168,12 +229,19 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... democli"
 	@echo "... demosvr"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... src/democli/democli.o"
+	@echo "... src/democli/democli.i"
+	@echo "... src/democli/democli.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/test.pb.o"
+	@echo "... src/test.pb.i"
+	@echo "... src/test.pb.s"
 	@echo "... src/worker.o"
 	@echo "... src/worker.i"
 	@echo "... src/worker.s"

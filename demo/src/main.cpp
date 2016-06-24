@@ -276,6 +276,9 @@ int main(int argc, char** argv)
 
 	//CReactor reactor;
 	//reactor.OnLoop(ip, port);
+    //CRequest req;
+    //req.test();
+    
     int listenFd = socket(AF_INET, SOCK_STREAM, 0);
     CAcceptor acceptor(listenFd, port);
 

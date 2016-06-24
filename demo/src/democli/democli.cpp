@@ -8,6 +8,10 @@
 #include <event2/bufferevent.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string>
+#include "request.h"
+
+using namespace CM;
 
 void showUsage()
 {
@@ -61,17 +65,28 @@ int main(int argc, char** argv)
     printf("on loop\n");
 	while(1)
 	{
-		char buf[] = "hello world";
-		int length = sizeof(buf);
-		write(fd, (char*)&length, 2);
-		write(fd, ((char*)&length) + 2, 2);
-		write(fd, buf, sizeof(buf));
+        CRequest::SHeader head;
+        head.uid = 1;
+        head.version = 1;
+        head.cmd = 1; // echo
+        char tmp[] = "hello world cmd 1!";
+        head.dataLen = sizeof(tmp);
 
-		char buf2[] = "bsadfjlj";
-		int length2 = sizeof(buf2);
-		write(fd, (char*)&length2, sizeof(length2));
-		write(fd, buf2, sizeof(buf2));
-		int tt = 5;
+		char buf[4096];
+        int headerLen = sizeof(CRequest::SHeader);
+        memcpy(buf, &head, headerLen);
+        memcpy(buf + headerLen, tmp, sizeof(tmp));
+
+		int length = headerLen + sizeof(tmp);
+		write(fd, buf, length);
+		//write(fd, (char*)&length, 2);
+		//write(fd, ((char*)&length) + 2, 2);
+//
+//		char buf2[] = "bsadfjlj";
+//		int length2 = sizeof(buf2);
+//		write(fd, (char*)&length2, sizeof(length2));
+//		write(fd, buf2, sizeof(buf2));
+//		int tt = 5;
 		//if ( --tt <= 0 )
 		//{
 		//	return 0;

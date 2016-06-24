@@ -5,6 +5,7 @@
 #include "event2/bufferevent.h"
 #include <assert.h>
 #include "reactor.h"
+#include "request.h"
 
 using namespace CM;
 
@@ -39,18 +40,19 @@ int CClient::HandleRead()
     printf("on read!buf:\n");
     struct evbuffer *input = bufferevent_get_input(_bev);
     unsigned int len = evbuffer_get_length(input);
-    while(len >= sizeof(unsigned int))
+    while(len >= sizeof(CRequest::SHeader))
     {
         unsigned int len = evbuffer_get_length(input);
         //包头大小未知
-        if (len < 4)
+        if (len < sizeof(CRequest::SHeader))
             return -1;
 
-        unsigned int code = 0;
-        size_t size = evbuffer_copyout(input, &code, sizeof(unsigned int));
-        printf("code:%d\n", code);
+        CRequest::SHeader reqHead;
+        size_t size = evbuffer_copyout(input, &reqHead, sizeof(CRequest::SHeader));
+        unsigned int code = reqHead.dataLen;
+        printf("code:%u\n", code);
         //code = ntohl(code);
-        printf("after code:%d\n", code);
+        printf("after code:%u\n", code);
         if ( size < sizeof(unsigned int) )
         {
             printf("log size :%u, fail\n", code);
@@ -70,6 +72,7 @@ int CClient::HandleRead()
                 return -1;
             }
             printf("remove len %d \n", removeLen);
+            printf("req:%s \n", req+size);
             //CChannel *channel = (CChannel*)ptr;
             //int ret = channel->HandleOut(req+size, reqLen - size);
             //if ( 0 != ret )
@@ -142,6 +145,60 @@ int CClient::SetReactor(void* reactor)
     return 0;
 }
 
+//int CClient::HandleRead()
+//{
+//    printf("on read!buf:\n");
+//    struct evbuffer *input = bufferevent_get_input(_bev);
+//    unsigned int len = evbuffer_get_length(input);
+//    while(len >= sizeof(unsigned int))
+//    {
+//        unsigned int len = evbuffer_get_length(input);
+//        //包头大小未知
+//        if (len < 4)
+//            return -1;
+//
+//        unsigned int code = 0;
+//        size_t size = evbuffer_copyout(input, &code, sizeof(unsigned int));
+//        printf("code:%d\n", code);
+//        //code = ntohl(code);
+//        printf("after code:%d\n", code);
+//        if ( size < sizeof(unsigned int) )
+//        {
+//            printf("log size :%u, fail\n", code);
+//            return -1;
+//        }
+//
+//        char req[4096];
+//        unsigned int reqLen = size + code;
+//        printf("reqLen lower:%u\n", reqLen);
+//        if (len >= reqLen)
+//        {
+//            //int removeLen = evbuffer_copyout(input, req, reqLen);
+//            int removeLen = evbuffer_remove(input, req, reqLen);
+//            if (-1 == removeLen)
+//            {
+//                printf("remove fail\n");
+//                return -1;
+//            }
+//            printf("remove len %d \n", removeLen);
+//            //CChannel *channel = (CChannel*)ptr;
+//            //int ret = channel->HandleOut(req+size, reqLen - size);
+//            //if ( 0 != ret )
+//            //{
+//            //    printf("%s HandleOut error\n", __func__ );
+//            //}
+//
+//            //debug
+//            len = evbuffer_get_length(input);
+//            printf("after remove len:%d\n", len);
+//        }
+//        else
+//        {
+//            return -1;
+//        }
+//    }
+//    return 0;
+//}
 void writecb(struct bufferevent *bev, void *ptr)
 {
 }

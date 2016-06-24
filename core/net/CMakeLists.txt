@@ -13,6 +13,7 @@ SET(SRC_LIST
     ${PROJECT_BINARY_DIR}/src/cm_event_handler.cpp
     ${PROJECT_BINARY_DIR}/src/acceptor.cpp
     ${PROJECT_BINARY_DIR}/src/client.cpp
+    ${PROJECT_BINARY_DIR}/src/request.cpp
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})
