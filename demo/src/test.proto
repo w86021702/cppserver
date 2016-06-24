@@ -1,0 +1,13 @@
+package hello;
+
+message HelloWorldReq
+{
+    required uint32 uid = 1;
+    required string name = 2;
+
+}
+
+message HelloWorldResp
+{
+    required uint32 code = 1;
+}
