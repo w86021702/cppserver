@@ -11,3 +11,19 @@ message HelloWorldResp
 {
     required uint32 code = 1;
 }
+
+
+service Hello {
+    extend google.protobuf.ServiceOptions {  
+        required uint32 service_id = 1000;   
+    }  
+    extend google.protobuf.MethodOptions {  
+        required uint32 method_id = 1000;  
+    }  
+
+    option (arpc.server_id) = 9096;
+    rpc Echo(HelloWorldReq) returns(HelloWorldResp)
+    {
+        option (arpc.method_id) = 1;
+    };
+};

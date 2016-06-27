@@ -20,6 +20,7 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* HelloWorldResp_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   HelloWorldResp_reflection_ = NULL;
+const ::google::protobuf::ServiceDescriptor* Hello_descriptor_ = NULL;
 
 }  // namespace
 
@@ -61,6 +62,7 @@ void protobuf_AssignDesc_test_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(HelloWorldResp));
+  Hello_descriptor_ = file->service(0);
 }
 
 namespace {
@@ -97,7 +99,8 @@ void protobuf_AddDesc_test_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\ntest.proto\022\005hello\"*\n\rHelloWorldReq\022\013\n\003"
     "uid\030\001 \002(\r\022\014\n\004name\030\002 \002(\t\"\036\n\016HelloWorldRes"
-    "p\022\014\n\004code\030\001 \002(\r", 95);
+    "p\022\014\n\004code\030\001 \002(\r2<\n\005Hello\0223\n\004Echo\022\024.hello"
+    ".HelloWorldReq\032\025.hello.HelloWorldResp", 157);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "test.proto", &protobuf_RegisterTypes);
   HelloWorldReq::default_instance_ = new HelloWorldReq();
@@ -588,6 +591,90 @@ void HelloWorldResp::Swap(HelloWorldResp* other) {
   return metadata;
 }
 
+
+// ===================================================================
+
+Hello::~Hello() {}
+
+const ::google::protobuf::ServiceDescriptor* Hello::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Hello_descriptor_;
+}
+
+const ::google::protobuf::ServiceDescriptor* Hello::GetDescriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Hello_descriptor_;
+}
+
+void Hello::Echo(::google::protobuf::RpcController* controller,
+                         const ::hello::HelloWorldReq*,
+                         ::hello::HelloWorldResp*,
+                         ::google::protobuf::Closure* done) {
+  controller->SetFailed("Method Echo() not implemented.");
+  done->Run();
+}
+
+void Hello::CallMethod(const ::google::protobuf::MethodDescriptor* method,
+                             ::google::protobuf::RpcController* controller,
+                             const ::google::protobuf::Message* request,
+                             ::google::protobuf::Message* response,
+                             ::google::protobuf::Closure* done) {
+  GOOGLE_DCHECK_EQ(method->service(), Hello_descriptor_);
+  switch(method->index()) {
+    case 0:
+      Echo(controller,
+             ::google::protobuf::down_cast<const ::hello::HelloWorldReq*>(request),
+             ::google::protobuf::down_cast< ::hello::HelloWorldResp*>(response),
+             done);
+      break;
+    default:
+      GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
+      break;
+  }
+}
+
+const ::google::protobuf::Message& Hello::GetRequestPrototype(
+    const ::google::protobuf::MethodDescriptor* method) const {
+  GOOGLE_DCHECK_EQ(method->service(), descriptor());
+  switch(method->index()) {
+    case 0:
+      return ::hello::HelloWorldReq::default_instance();
+    default:
+      GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
+      return *reinterpret_cast< ::google::protobuf::Message*>(NULL);
+  }
+}
+
+const ::google::protobuf::Message& Hello::GetResponsePrototype(
+    const ::google::protobuf::MethodDescriptor* method) const {
+  GOOGLE_DCHECK_EQ(method->service(), descriptor());
+  switch(method->index()) {
+    case 0:
+      return ::hello::HelloWorldResp::default_instance();
+    default:
+      GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
+      return *reinterpret_cast< ::google::protobuf::Message*>(NULL);
+  }
+}
+
+Hello_Stub::Hello_Stub(::google::protobuf::RpcChannel* channel)
+  : channel_(channel), owns_channel_(false) {}
+Hello_Stub::Hello_Stub(
+    ::google::protobuf::RpcChannel* channel,
+    ::google::protobuf::Service::ChannelOwnership ownership)
+  : channel_(channel),
+    owns_channel_(ownership == ::google::protobuf::Service::STUB_OWNS_CHANNEL) {}
+Hello_Stub::~Hello_Stub() {
+  if (owns_channel_) delete channel_;
+}
+
+void Hello_Stub::Echo(::google::protobuf::RpcController* controller,
+                              const ::hello::HelloWorldReq* request,
+                              ::hello::HelloWorldResp* response,
+                              ::google::protobuf::Closure* done) {
+  channel_->CallMethod(descriptor()->method(0),
+                       controller, request, response, done);
+}
 
 // @@protoc_insertion_point(namespace_scope)
 

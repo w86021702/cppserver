@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/service.h>
 #ifdef _WEB_LOGIC
 #include "CharSetUtil.hpp"
 #endif
@@ -228,6 +229,65 @@ class HelloWorldResp : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static HelloWorldResp* default_instance_;
 };
+// ===================================================================
+
+class Hello_Stub;
+
+class Hello : public ::google::protobuf::Service {
+ protected:
+  // This class should be treated as an abstract interface.
+  inline Hello() {};
+ public:
+  virtual ~Hello();
+  
+  typedef Hello_Stub Stub;
+  
+  static const ::google::protobuf::ServiceDescriptor* descriptor();
+  
+  virtual void Echo(::google::protobuf::RpcController* controller,
+                       const ::hello::HelloWorldReq* request,
+                       ::hello::HelloWorldResp* response,
+                       ::google::protobuf::Closure* done);
+  
+  // implements Service ----------------------------------------------
+  
+  const ::google::protobuf::ServiceDescriptor* GetDescriptor();
+  void CallMethod(const ::google::protobuf::MethodDescriptor* method,
+                  ::google::protobuf::RpcController* controller,
+                  const ::google::protobuf::Message* request,
+                  ::google::protobuf::Message* response,
+                  ::google::protobuf::Closure* done);
+  const ::google::protobuf::Message& GetRequestPrototype(
+    const ::google::protobuf::MethodDescriptor* method) const;
+  const ::google::protobuf::Message& GetResponsePrototype(
+    const ::google::protobuf::MethodDescriptor* method) const;
+
+ private:
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(Hello);
+};
+
+class Hello_Stub : public Hello {
+ public:
+  Hello_Stub(::google::protobuf::RpcChannel* channel);
+  Hello_Stub(::google::protobuf::RpcChannel* channel,
+                   ::google::protobuf::Service::ChannelOwnership ownership);
+  ~Hello_Stub();
+  
+  inline ::google::protobuf::RpcChannel* channel() { return channel_; }
+  
+  // implements Hello ------------------------------------------
+  
+  void Echo(::google::protobuf::RpcController* controller,
+                       const ::hello::HelloWorldReq* request,
+                       ::hello::HelloWorldResp* response,
+                       ::google::protobuf::Closure* done);
+ private:
+  ::google::protobuf::RpcChannel* channel_;
+  bool owns_channel_;
+  GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(Hello_Stub);
+};
+
+
 // ===================================================================
 
 

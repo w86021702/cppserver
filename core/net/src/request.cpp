@@ -1,5 +1,7 @@
 #include "request.h"
 #include "commdef.h"
+#include <string.h>
+#include <assert.h>
 //#include "google/protobuf/descriptor.h"
 //#include "google/protobuf/message.h"
 //#include "test.pb.h"
@@ -7,9 +9,20 @@
 using namespace CM;
 using namespace std;
 
+CRequest::CRequest()
+{
+}
+
+CRequest::~CRequest()
+{
+}
+
 bool CRequest::Parse(const char *str, unsigned int len)
 {
-
+    assert(len >= sizeof(SHeader));
+    memcpy(&_header, str, sizeof(SHeader));
+    assert(len >= sizeof(SHeader)+_header.dataLen);
+    _body = str + sizeof(SHeader);
     return true;
 }
 

@@ -267,6 +267,7 @@ int main(int argc, char** argv)
         close(1);
         close(2);
         int fd = open("/dev/null", O_WRONLY);
+        chdir("./");
         //dup2(fd, 0);
         dup2(fd, 1);
         dup2(fd, 2);

@@ -79,6 +79,8 @@ int CClient::HandleRead()
             //{
             //    printf("%s HandleOut error\n", __func__ );
             //}
+            CRequest request;
+            request.Parse(req, reqLen);
 
             //debug
             len = evbuffer_get_length(input);
