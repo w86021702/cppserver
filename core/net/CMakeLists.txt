@@ -14,10 +14,12 @@ SET(SRC_LIST
     ${PROJECT_BINARY_DIR}/src/acceptor.cpp
     ${PROJECT_BINARY_DIR}/src/client.cpp
     ${PROJECT_BINARY_DIR}/src/request.cpp
+    ${PROJECT_BINARY_DIR}/src/pbrpc/pb_ex.pb.cc
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})
 ADD_LIBRARY(corenet STATIC ${SRC_LIST})
+TARGET_LINK_LIBRARIES(corenet pthread corenet protobuf)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 

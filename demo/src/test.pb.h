@@ -24,6 +24,7 @@
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/service.h>
+#include "pb_ex.pb.h"
 #ifdef _WEB_LOGIC
 #include "CharSetUtil.hpp"
 #endif

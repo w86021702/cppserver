@@ -1,0 +1,14 @@
+import "google/protobuf/descriptor.proto"
+
+package pbex;
+
+extend google.protobuf.ServiceOptions { 
+    optional string ServerType = 1000000; 
+    optional int32 Magic = 1000001; 
+} 
+ 
+extend google.protobuf.MethodOptions { 
+    required int32  CmdID = 1000000; 
+    optional string OptString = 1000001; 
+    optional string Usage = 1000002; 
+} 

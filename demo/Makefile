@@ -127,6 +127,19 @@ demosvr/fast:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/build
 .PHONY : demosvr/fast
 
+#=============================================================================
+# Target rules for targets named rpcsvr
+
+# Build rule for target.
+rpcsvr: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rpcsvr
+.PHONY : rpcsvr
+
+# fast build rule for target.
+rpcsvr/fast:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/build
+.PHONY : rpcsvr/fast
+
 src/democli/democli.o: src/democli/democli.cpp.o
 .PHONY : src/democli/democli.o
 
@@ -175,29 +188,29 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/test.pb.o: src/test.pb.cc.o
-.PHONY : src/test.pb.o
+src/protomain.o: src/protomain.cpp.o
+.PHONY : src/protomain.o
 
 # target to build an object file
-src/test.pb.cc.o:
-	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.o
-.PHONY : src/test.pb.cc.o
+src/protomain.cpp.o:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/protomain.cpp.o
+.PHONY : src/protomain.cpp.o
 
-src/test.pb.i: src/test.pb.cc.i
-.PHONY : src/test.pb.i
+src/protomain.i: src/protomain.cpp.i
+.PHONY : src/protomain.i
 
 # target to preprocess a source file
-src/test.pb.cc.i:
-	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.i
-.PHONY : src/test.pb.cc.i
+src/protomain.cpp.i:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/protomain.cpp.i
+.PHONY : src/protomain.cpp.i
 
-src/test.pb.s: src/test.pb.cc.s
-.PHONY : src/test.pb.s
+src/protomain.s: src/protomain.cpp.s
+.PHONY : src/protomain.s
 
 # target to generate assembly for a file
-src/test.pb.cc.s:
-	$(MAKE) -f CMakeFiles/demosvr.dir/build.make CMakeFiles/demosvr.dir/src/test.pb.cc.s
-.PHONY : src/test.pb.cc.s
+src/protomain.cpp.s:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/protomain.cpp.s
+.PHONY : src/protomain.cpp.s
 
 src/worker.o: src/worker.cpp.o
 .PHONY : src/worker.o
@@ -233,15 +246,16 @@ help:
 	@echo "... demosvr"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... rpcsvr"
 	@echo "... src/democli/democli.o"
 	@echo "... src/democli/democli.i"
 	@echo "... src/democli/democli.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/test.pb.o"
-	@echo "... src/test.pb.i"
-	@echo "... src/test.pb.s"
+	@echo "... src/protomain.o"
+	@echo "... src/protomain.i"
+	@echo "... src/protomain.s"
 	@echo "... src/worker.o"
 	@echo "... src/worker.i"
 	@echo "... src/worker.s"

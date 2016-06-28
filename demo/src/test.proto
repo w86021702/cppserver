@@ -1,3 +1,6 @@
+//import "../../comm/pb/pb_ex.proto";
+import "pb_ex.proto";
+
 package hello;
 
 message HelloWorldReq
@@ -14,16 +17,10 @@ message HelloWorldResp
 
 
 service Hello {
-    extend google.protobuf.ServiceOptions {  
-        required uint32 service_id = 1000;   
-    }  
-    extend google.protobuf.MethodOptions {  
-        required uint32 method_id = 1000;  
-    }  
+    option (pbex.Magic) = 9096;
 
-    option (arpc.server_id) = 9096;
     rpc Echo(HelloWorldReq) returns(HelloWorldResp)
     {
-        option (arpc.method_id) = 1;
+        option (pbex.CmdID) = 1;
     };
 };

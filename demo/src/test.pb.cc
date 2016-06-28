@@ -96,11 +96,13 @@ void protobuf_AddDesc_test_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::pbex::protobuf_AddDesc_pb_5fex_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\ntest.proto\022\005hello\"*\n\rHelloWorldReq\022\013\n\003"
-    "uid\030\001 \002(\r\022\014\n\004name\030\002 \002(\t\"\036\n\016HelloWorldRes"
-    "p\022\014\n\004code\030\001 \002(\r2<\n\005Hello\0223\n\004Echo\022\024.hello"
-    ".HelloWorldReq\032\025.hello.HelloWorldResp", 157);
+    "\n\ntest.proto\022\005hello\032\013pb_ex.proto\"*\n\rHell"
+    "oWorldReq\022\013\n\003uid\030\001 \002(\r\022\014\n\004name\030\002 \002(\t\"\036\n\016"
+    "HelloWorldResp\022\014\n\004code\030\001 \002(\r2K\n\005Hello\022:\n"
+    "\004Echo\022\024.hello.HelloWorldReq\032\025.hello.Hell"
+    "oWorldResp\"\005\200\244\350\003\001\032\006\210\244\350\003\210G", 185);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "test.proto", &protobuf_RegisterTypes);
   HelloWorldReq::default_instance_ = new HelloWorldReq();
