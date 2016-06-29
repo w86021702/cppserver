@@ -33,6 +33,7 @@ ADD_EXECUTABLE(democli ${SRC_CLI})
 #make_rpcsvr
 SET(SRC_RPC
     ${PROJECT_BINARY_DIR}/src/protomain.cpp
+    ${PROJECT_BINARY_DIR}/src/test.pb.cc
     )
 ADD_EXECUTABLE(rpcsvr ${SRC_RPC})
 TARGET_LINK_LIBRARIES(rpcsvr event pthread corenet protobuf)

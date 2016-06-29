@@ -212,6 +212,30 @@ src/protomain.cpp.s:
 	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/protomain.cpp.s
 .PHONY : src/protomain.cpp.s
 
+src/test.pb.o: src/test.pb.cc.o
+.PHONY : src/test.pb.o
+
+# target to build an object file
+src/test.pb.cc.o:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/test.pb.cc.o
+.PHONY : src/test.pb.cc.o
+
+src/test.pb.i: src/test.pb.cc.i
+.PHONY : src/test.pb.i
+
+# target to preprocess a source file
+src/test.pb.cc.i:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/test.pb.cc.i
+.PHONY : src/test.pb.cc.i
+
+src/test.pb.s: src/test.pb.cc.s
+.PHONY : src/test.pb.s
+
+# target to generate assembly for a file
+src/test.pb.cc.s:
+	$(MAKE) -f CMakeFiles/rpcsvr.dir/build.make CMakeFiles/rpcsvr.dir/src/test.pb.cc.s
+.PHONY : src/test.pb.cc.s
+
 src/worker.o: src/worker.cpp.o
 .PHONY : src/worker.o
 
@@ -256,6 +280,9 @@ help:
 	@echo "... src/protomain.o"
 	@echo "... src/protomain.i"
 	@echo "... src/protomain.s"
+	@echo "... src/test.pb.o"
+	@echo "... src/test.pb.i"
+	@echo "... src/test.pb.s"
 	@echo "... src/worker.o"
 	@echo "... src/worker.i"
 	@echo "... src/worker.s"

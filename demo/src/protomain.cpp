@@ -17,6 +17,7 @@
 #include "test.pb.h"
 
 using namespace CM;
+using namespace hello;
 
 void showUsage()
 {
@@ -86,8 +87,33 @@ int main(int argc, char** argv)
 	return 0;
 }
 
+class RpcServer : public Hello
+{
+public:
+  virtual void Echo(::google::protobuf::RpcController* controller,
+                       const ::hello::HelloWorldReq* request,
+                       ::hello::HelloWorldResp* response,
+                       ::google::protobuf::Closure* done)
+  {
+      printf("req:%s\b", request->ShortDebugString().c_str());
+
+      response->set_code(11);
+      printf("resp:%s\b", response->ShortDebugString().c_str());
+      done->Run();
+  }
+
+  int Init()
+  {
+      return 0;
+  }
+
+private:
+
+};
+
+
 void test()
 {
-    printf("on etst \n");
-
+    printf("on test \n");
+    RpcServer();
 }

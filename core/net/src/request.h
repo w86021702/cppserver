@@ -13,12 +13,19 @@
 
 namespace CM{
 
+enum EMsgType
+{
+    EMsgType_RPC = 1, //rpc调用
+    EMsgType_HEART = 2, //心跳
+};
+
 class CRequest
 {
 public:
     struct SHeader
     {
         unsigned int uid = 0;
+        unsigned int type = 0;    //消息类型
         unsigned int cmd = 0;
         unsigned int version = 0; //版本号
         unsigned int dataLen = 0; //body长度
