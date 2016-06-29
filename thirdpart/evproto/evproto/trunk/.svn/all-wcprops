@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 22
+/svn/!svn/ver/13/trunk
+END
+build.sh
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/6/trunk/build.sh
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/6/trunk/CMakeLists.txt
+END
+License
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/12/trunk/License
+END
+libevent-2.0.4-alpha-msg-new-with-arg.patch
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/9/trunk/libevent-2.0.4-alpha-msg-new-with-arg.patch
+END
+libevent-2.0.4-alpha-get-request-reply.patch
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/11/trunk/libevent-2.0.4-alpha-get-request-reply.patch
+END
