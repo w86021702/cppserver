@@ -5,6 +5,8 @@
 
 struct event_base;
 
+namespace CM{
+
 class CReactor
 {
 public:
@@ -17,9 +19,11 @@ public:
 	int OnLoop(const std::string& ip, unsigned int port = 9094);
 	int Loop();
 	void* GetReactor() const;
+    void* GetLoop() const;
 
 private:
 	event_base *_evBase;
 };
 
+}
 #endif

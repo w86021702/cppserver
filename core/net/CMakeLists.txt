@@ -5,7 +5,9 @@ PROJECT(CORE_NET_LIB)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 
-INCLUDE_DIRECTORIES(${PROJECT_ROOT_DIRECTORY}/core/net/)
+#INCLUDE_DIRECTORIES(${PROJECT_ROOT_DIRECTORY}/core/net/)
+INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/)
+INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/pbrpc/)
 
 SET(SRC_LIST 
     ${PROJECT_BINARY_DIR}/src/channel.cpp
@@ -15,6 +17,8 @@ SET(SRC_LIST
     ${PROJECT_BINARY_DIR}/src/client.cpp
     ${PROJECT_BINARY_DIR}/src/request.cpp
     ${PROJECT_BINARY_DIR}/src/pbrpc/pb_ex.pb.cc
+    ${PROJECT_BINARY_DIR}/src/pbrpc/httpserver.cpp
+    ${PROJECT_BINARY_DIR}/src/pbrpc/pbrpcserver.cpp
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})

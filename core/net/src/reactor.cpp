@@ -154,3 +154,8 @@ void* CReactor::GetReactor() const
 {
 	return _evBase;
 }
+
+void* CReactor::GetLoop() const
+{
+	return _evBase;
+}

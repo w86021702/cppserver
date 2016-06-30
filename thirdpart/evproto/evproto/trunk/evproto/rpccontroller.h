@@ -13,7 +13,6 @@
 #include "evproto/common.h"
 
 #include <google/protobuf/service.h>
-#include <google/protobuf/service.h>
 
 struct evbuffer;
 struct evrpc_status;
