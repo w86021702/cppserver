@@ -19,6 +19,8 @@ SET(SRC_LIST
     ${PROJECT_BINARY_DIR}/src/pbrpc/pb_ex.pb.cc
     ${PROJECT_BINARY_DIR}/src/pbrpc/httpserver.cpp
     ${PROJECT_BINARY_DIR}/src/pbrpc/pbrpcserver.cpp
+    ${PROJECT_BINARY_DIR}/src/pbrpc/pbrpcclient.cpp
+    ${PROJECT_BINARY_DIR}/src/pbrpc/rpccontrol.cpp
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})

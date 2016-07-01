@@ -24,8 +24,7 @@ public:
 
     int RegisterServices(gpb::Service* services);
 
-    int InvokeMethod(struct evrpc_req_generic* req, void* arg);
-
+    static void InvokeMethod(struct evrpc_req_generic* req, void* arg);
     static void DoneCallBack(struct evrpc_req_generic* req);
 
 private:
@@ -38,7 +37,7 @@ private:
 private:
     CM::CReactor* _reactor;
     evrpc_base* _rpcbase;
-    std::map<unsigned int, RPCMethod> _methods;
+    //std::map<unsigned int, RPCMethod> _methods;
     std::vector<RPCMethod*> _toDelete;
 
 };

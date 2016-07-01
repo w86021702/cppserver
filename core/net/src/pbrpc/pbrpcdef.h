@@ -13,4 +13,9 @@ namespace pbrpc
     namespace gpb = ::google::protobuf;
 }
 
+namespace CM
+{
+    class CReactor;
+}
+
 #endif
