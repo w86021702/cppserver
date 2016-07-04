@@ -14,7 +14,7 @@ CRPCChannel::CRPCChannel(CM::CReactor* reactor)
 
 CRPCChannel::~CRPCChannel()
 {
-    for (auto& con : conns)
+    for (auto& con : _conns)
     {
         evrpc_pool_remove_connection(_pool, con);
         evhttp_connection_free(con);
@@ -34,7 +34,7 @@ void CRPCChannel::CallMethod(const gpb::MethodDescriptor* methodDesc,
             const_cast<gpb::Message*>(req),
             resp,
             CRPCControl::StatusCallBack,
-            resp,
+            done,
             methodDesc->full_name().c_str(),
             CRPCControl::Codec,
             CRPCControl::DeleteMsg,
@@ -46,14 +46,13 @@ void CRPCChannel::CallMethod(const gpb::MethodDescriptor* methodDesc,
         //core
         printf("%s fail\n", __func__);
     }
-
 }
 
 int CRPCChannel::AddServices(const std::string& ip, unsigned int port)
 {
     struct evhttp_connection* con = evhttp_connection_base_new(NULL, NULL, ip.c_str(), port);
     evrpc_pool_add_connection(_pool, con);
-    conns.push_back(con);
+    _conns.push_back(con);
 
     return 0;
 }

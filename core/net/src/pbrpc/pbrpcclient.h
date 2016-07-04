@@ -26,7 +26,7 @@ public:
 private:
     CM::CReactor* _reactor;
     evrpc_pool* _pool;
-    std::vector<evhttp_connection*> conns;
+    std::vector<evhttp_connection*> _conns;
 };
 
 }

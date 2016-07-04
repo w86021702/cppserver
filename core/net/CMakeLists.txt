@@ -8,6 +8,7 @@ ADD_COMPILE_OPTIONS(-g -Wall -std=c++11)
 #INCLUDE_DIRECTORIES(${PROJECT_ROOT_DIRECTORY}/core/net/)
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/)
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/pbrpc/)
+INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/log/)
 
 SET(SRC_LIST 
     ${PROJECT_BINARY_DIR}/src/channel.cpp
@@ -21,6 +22,7 @@ SET(SRC_LIST
     ${PROJECT_BINARY_DIR}/src/pbrpc/pbrpcserver.cpp
     ${PROJECT_BINARY_DIR}/src/pbrpc/pbrpcclient.cpp
     ${PROJECT_BINARY_DIR}/src/pbrpc/rpccontrol.cpp
+    ${PROJECT_BINARY_DIR}/src/log/logmgr.cpp
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})

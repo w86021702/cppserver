@@ -1,0 +1,17 @@
+package  test;
+
+message EchoReq
+{
+    required string msg = 1;
+};
+
+message EchoResp
+{
+    required string msg = 1;
+};
+
+
+service TestSvr
+{
+    rpc Echo(EchoReq) returns (EchoResp);
+};

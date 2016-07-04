@@ -11,4 +11,6 @@
 #include <unistd.h>
 #include <assert.h>
 
+const unsigned int MAX_BUFF_SIZE = 4096;
+
 #endif

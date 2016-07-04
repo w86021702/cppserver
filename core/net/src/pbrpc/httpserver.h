@@ -18,7 +18,7 @@ public:
     CHttpServer(CM::CReactor* reactor);
     ~CHttpServer();
 
-    bool Init(const std::string& ip, const unsigned int port);
+    bool Init(const unsigned int port);
     
     evhttp* GetHttp() const;
 

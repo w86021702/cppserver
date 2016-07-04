@@ -21,10 +21,11 @@ CHttpServer::~CHttpServer()
     }
 }
 
-bool CHttpServer::Init(const std::string& ip, const unsigned int port)
+bool CHttpServer::Init(const unsigned int port)
 {
+    const std::string ip = "127.0.0.1";
     _httpd = evhttp_new((event_base*)_reactor->GetLoop());
-    if ( !evhttp_bind_socket(_httpd, ip.c_str(), port) )
+    if (0 != evhttp_bind_socket(_httpd, ip.c_str(), port) )
     {
         printf("http server error!\n");
         return false;
