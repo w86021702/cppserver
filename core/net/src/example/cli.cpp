@@ -24,8 +24,8 @@ int main(int arg, char **argv)
     test::EchoReq req;
     req.set_msg("hello rpc");
     test::EchoResp resp;
-    
     stub.Echo(&contoller,&req, &resp, gpb::NewCallback(OnResp, &resp));
+
     reactor.OnLoop();
 
     return 0;

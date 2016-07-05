@@ -37,7 +37,7 @@ void CRPCChannel::CallMethod(const gpb::MethodDescriptor* methodDesc,
             done,
             methodDesc->full_name().c_str(),
             CRPCControl::Codec,
-            CRPCControl::DeleteMsg,
+            CRPCControl::Clear,
             CRPCControl::DeCodec
             );
 

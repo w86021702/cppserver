@@ -75,6 +75,8 @@ public:
 
     static void* NewMsg(void* arg);
     static void DeleteMsg(void* arg);
+    //解密失败时调用
+    static void Clear(void* arg);
     static int Complete(void* arg);
 
     static void StatusCallBack(struct evrpc_status*, void*, void*, void*);
