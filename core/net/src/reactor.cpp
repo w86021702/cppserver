@@ -76,9 +76,6 @@ int MakeListener(const std::string& ip, unsigned int port)
 int CReactor::OnLoop()
 {
     event_base_loop(_evBase, 0x04);
-
-    //释放ev_base所有事件
-    event_base_free(_evBase);
     return 0;
 }
 

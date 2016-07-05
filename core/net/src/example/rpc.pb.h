@@ -198,6 +198,20 @@ class EchoResp : public ::google::protobuf::Message {
   inline void set_msg(const char* value, size_t size);
   inline ::std::string* mutable_msg();
   
+  // optional uint32 code = 2;
+  inline bool has_code() const;
+  inline void clear_code();
+  static const int kCodeFieldNumber = 2;
+  inline ::google::protobuf::uint32 code() const;
+  inline void set_code(::google::protobuf::uint32 value);
+  
+  // optional uint32 testCode = 3;
+  inline bool has_testcode() const;
+  inline void clear_testcode();
+  static const int kTestCodeFieldNumber = 3;
+  inline ::google::protobuf::uint32 testcode() const;
+  inline void set_testcode(::google::protobuf::uint32 value);
+  
   // @@protoc_insertion_point(class_scope:test.EchoResp)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -205,11 +219,13 @@ class EchoResp : public ::google::protobuf::Message {
   
   ::std::string* msg_;
   static const ::std::string _default_msg_;
+  ::google::protobuf::uint32 code_;
+  ::google::protobuf::uint32 testcode_;
   friend void  protobuf_AddDesc_rpc_2eproto();
   friend void protobuf_AssignDesc_rpc_2eproto();
   friend void protobuf_ShutdownFile_rpc_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -437,6 +453,38 @@ inline ::std::string* EchoResp::mutable_msg() {
     msg_ = new ::std::string;
   }
   return msg_;
+}
+
+// optional uint32 code = 2;
+inline bool EchoResp::has_code() const {
+  return _has_bit(1);
+}
+inline void EchoResp::clear_code() {
+  code_ = 0u;
+  _clear_bit(1);
+}
+inline ::google::protobuf::uint32 EchoResp::code() const {
+  return code_;
+}
+inline void EchoResp::set_code(::google::protobuf::uint32 value) {
+  _set_bit(1);
+  code_ = value;
+}
+
+// optional uint32 testCode = 3;
+inline bool EchoResp::has_testcode() const {
+  return _has_bit(2);
+}
+inline void EchoResp::clear_testcode() {
+  testcode_ = 0u;
+  _clear_bit(2);
+}
+inline ::google::protobuf::uint32 EchoResp::testcode() const {
+  return testcode_;
+}
+inline void EchoResp::set_testcode(::google::protobuf::uint32 value) {
+  _set_bit(2);
+  testcode_ = value;
 }
 
 

@@ -47,8 +47,10 @@ void protobuf_AssignDesc_rpc_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EchoReq));
   EchoResp_descriptor_ = file->message_type(1);
-  static const int EchoResp_offsets_[1] = {
+  static const int EchoResp_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EchoResp, msg_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EchoResp, code_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EchoResp, testcode_),
   };
   EchoResp_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -97,8 +99,9 @@ void protobuf_AddDesc_rpc_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\trpc.proto\022\004test\"\026\n\007EchoReq\022\013\n\003msg\030\001 \002("
-    "\t\"\027\n\010EchoResp\022\013\n\003msg\030\001 \002(\t20\n\007TestSvr\022%\n"
-    "\004Echo\022\r.test.EchoReq\032\016.test.EchoResp", 116);
+    "\t\"7\n\010EchoResp\022\013\n\003msg\030\001 \002(\t\022\014\n\004code\030\002 \001(\r"
+    "\022\020\n\010testCode\030\003 \001(\r20\n\007TestSvr\022%\n\004Echo\022\r."
+    "test.EchoReq\032\016.test.EchoResp", 148);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "rpc.proto", &protobuf_RegisterTypes);
   EchoReq::default_instance_ = new EchoReq();
@@ -347,6 +350,8 @@ void EchoReq::Swap(EchoReq* other) {
 const ::std::string EchoResp::_default_msg_;
 #ifndef _MSC_VER
 const int EchoResp::kMsgFieldNumber;
+const int EchoResp::kCodeFieldNumber;
+const int EchoResp::kTestCodeFieldNumber;
 #endif  // !_MSC_VER
 
 EchoResp::EchoResp()
@@ -366,6 +371,8 @@ EchoResp::EchoResp(const EchoResp& from)
 void EchoResp::SharedCtor() {
   _cached_size_ = 0;
   msg_ = const_cast< ::std::string*>(&_default_msg_);
+  code_ = 0u;
+  testcode_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -408,6 +415,8 @@ void EchoResp::Clear() {
         msg_->clear();
       }
     }
+    code_ = 0u;
+    testcode_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -428,6 +437,38 @@ bool EchoResp::MergePartialFromCodedStream(
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
             this->msg().data(), this->msg().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_code;
+        break;
+      }
+      
+      // optional uint32 code = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_code:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &code_)));
+          _set_bit(1);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_testCode;
+        break;
+      }
+      
+      // optional uint32 testCode = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_testCode:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &testcode_)));
+          _set_bit(2);
         } else {
           goto handle_uninterpreted;
         }
@@ -462,6 +503,16 @@ void EchoResp::SerializeWithCachedSizes(
       1, this->msg(), output);
   }
   
+  // optional uint32 code = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->code(), output);
+  }
+  
+  // optional uint32 testCode = 3;
+  if (_has_bit(2)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->testcode(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -480,6 +531,16 @@ void EchoResp::SerializeWithCachedSizes(
         1, this->msg(), target);
   }
   
+  // optional uint32 code = 2;
+  if (_has_bit(1)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->code(), target);
+  }
+  
+  // optional uint32 testCode = 3;
+  if (_has_bit(2)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->testcode(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -496,6 +557,20 @@ int EchoResp::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->msg());
+    }
+    
+    // optional uint32 code = 2;
+    if (has_code()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->code());
+    }
+    
+    // optional uint32 testCode = 3;
+    if (has_testcode()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->testcode());
     }
     
   }
@@ -528,6 +603,12 @@ void EchoResp::MergeFrom(const EchoResp& from) {
     if (from._has_bit(0)) {
       set_msg(from.msg());
     }
+    if (from._has_bit(1)) {
+      set_code(from.code());
+    }
+    if (from._has_bit(2)) {
+      set_testcode(from.testcode());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -553,6 +634,8 @@ bool EchoResp::IsInitialized() const {
 void EchoResp::Swap(EchoResp* other) {
   if (other != this) {
     std::swap(msg_, other->msg_);
+    std::swap(code_, other->code_);
+    std::swap(testcode_, other->testcode_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

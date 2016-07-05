@@ -9,8 +9,8 @@ using namespace std;
 
 void OnResp(test::EchoResp* resp)
 {
-    printf("resp:%s\n", resp->ShortDebugString().c_str());
-    printf("msg:%s\n", resp->msg().c_str());
+    printf("resp: %s\n", resp->ShortDebugString().c_str());
+    printf("msg: %s\n", resp->msg().c_str());
 }
 
 int main(int arg, char **argv)

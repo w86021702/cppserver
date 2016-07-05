@@ -8,6 +8,8 @@ message EchoReq
 message EchoResp
 {
     required string msg = 1;
+    optional uint32 code = 2;
+    optional uint32 testCode = 3;
 };
 
 

@@ -16,6 +16,7 @@ public:
   {
       string ss = "##hello echo: ##" + request->msg();
       response->set_msg(ss);
+      response->set_code(99);
       done->Run();
   }
 };
