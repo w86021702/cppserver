@@ -48,11 +48,15 @@ void CRPCChannel::CallMethod(const gpb::MethodDescriptor* methodDesc,
     }
 }
 
-int CRPCChannel::AddServices(const std::string& ip, unsigned int port)
+bool CRPCChannel::AddServices(const std::string& ip, unsigned int port)
 {
     struct evhttp_connection* con = evhttp_connection_base_new(NULL, NULL, ip.c_str(), port);
-    evrpc_pool_add_connection(_pool, con);
-    _conns.push_back(con);
 
-    return 0;
+    if (con)
+    {
+        evrpc_pool_add_connection(_pool, con);
+        _conns.push_back(con);
+    }
+
+    return con != NULL;
 }

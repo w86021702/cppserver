@@ -22,7 +22,7 @@ int main(int arg, char **argv)
 
     CRPCControl contoller;
     test::EchoReq req;
-    req.set_msg("hello rpc");
+    req.set_msg("cli:hello rpc!");
     test::EchoResp resp;
     stub.Echo(&contoller,&req, &resp, gpb::NewCallback(OnResp, &resp));
 

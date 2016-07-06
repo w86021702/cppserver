@@ -21,7 +21,7 @@ public:
             gpb::Message* resp,
             gpb::Closure* done);
 
-    int AddServices(const std::string& ip, unsigned int port);
+    bool AddServices(const std::string& ip, unsigned int port);
 
 private:
     CM::CReactor* _reactor;

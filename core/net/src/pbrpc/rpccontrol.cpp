@@ -17,14 +17,16 @@ using namespace std;
 void CRPCControl::Codec(evbuffer* ev, void* arg)
 {
     gpb::Message* msg = static_cast<gpb::Message*>(arg);
-    //CM::LogDebug("codec:" + msg->GetTypeName());
-    char buffer[MAX_BUFF_SIZE];
-    if (!msg->SerializeToArray(buffer, MAX_BUFF_SIZE))
+    if (!msg->IsInitialized())
     {
-        CM::LogDebug("CRPCControl::Codec:" + msg->ShortDebugString());
+        CM::LogDebug("CRPCControl::Codec fail:" + msg->ShortDebugString());
+        return ;
     }
 
-    evbuffer_add(ev, buffer, MAX_BUFF_SIZE);
+    //CM::LogDebug("codec:" + msg->GetTypeName());
+    string ss = msg->SerializeAsString();
+    assert(ss.size() < MAX_BUFF_SIZE);
+    evbuffer_add(ev, ss.c_str(), ss.size());
 }
 
 int CRPCControl::DeCodec(void* arg, evbuffer* ev)
@@ -32,8 +34,18 @@ int CRPCControl::DeCodec(void* arg, evbuffer* ev)
     gpb::Message* msg = static_cast<gpb::Message*>(arg);
     //CM::LogDebug("decode:" + msg->GetTypeName());
     char buffer[MAX_BUFF_SIZE];
-    evbuffer_remove(ev, buffer, MAX_BUFF_SIZE);
-    if ( !msg->ParseFromArray(buffer, MAX_BUFF_SIZE) )
+    int buflen = evbuffer_get_length(ev);
+    assert(MAX_BUFF_SIZE > buflen);
+    int len = evbuffer_remove(ev, buffer, buflen);
+    if (len == 0)
+    {
+        CM::LogDebug("len == 0, decode fail:" + msg->GetTypeName());
+        return -1;
+    }
+
+    printf("len:%d, buflen:%d, %s\n", len, buflen, buffer);
+
+    if ( !msg->ParseFromArray(buffer, buflen) )
     {
         CM::LogDebug("decode fail:" + msg->GetTypeName());
         return -1;
@@ -45,6 +57,7 @@ int CRPCControl::DeCodec(void* arg, evbuffer* ev)
 
 void CRPCControl::DownCallBack(struct evrpc_req_generic* req)
 {
+    CM::LogDebug("DownCallBack msg:");
     //CM::LogDebug(req->uri());
     //struct evbuffer* ev = evbuffer_new();
     //evbuffer_add(ev, "hello\r\n", 7);
@@ -70,6 +83,7 @@ void CRPCControl::CRPCControl::Clear(void* arg)
 {
     gpb::Message* msg = static_cast<gpb::Message*>(arg);
     CM::LogDebug("clear msg:" + msg->GetTypeName());
+    //delete msg;
 }
 
 int CRPCControl::Complete(void* arg)
@@ -85,6 +99,10 @@ void CRPCControl::StatusCallBack(struct evrpc_status* status, void*, void*, void
     if (status->error != EVRPC_STATUS_ERR_NONE) 
     {
         CM::LogDebug("CRPCControl::StatusCallBack fail!");
+
+        //if (status->error == EVRPC_STATUS_ERR_HTTP)
+        //{
+        //}
         return ;
     }
 

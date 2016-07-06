@@ -14,7 +14,7 @@ public:
                        ::test::EchoResp* response,
                        ::google::protobuf::Closure* done)
   {
-      string ss = "##hello echo: ##" + request->msg();
+      string ss = "svr:hello! req : " + request->msg();
       response->set_msg(ss);
       response->set_code(99);
       done->Run();
