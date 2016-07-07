@@ -37,7 +37,7 @@ bool CHttpServer::Init(const unsigned int port)
 
 void OnMessage(struct evhttp_request* req, void* arg)
 {
-    printf("on http msg\n");
+    printf("#########on http msg!\n");
 }
 
 evhttp* CHttpServer::GetHttp() const

@@ -260,6 +260,10 @@ class TestSvr : public ::google::protobuf::Service {
                        const ::test::EchoReq* request,
                        ::test::EchoResp* response,
                        ::google::protobuf::Closure* done);
+  virtual void Echo2(::google::protobuf::RpcController* controller,
+                       const ::test::EchoReq* request,
+                       ::test::EchoResp* response,
+                       ::google::protobuf::Closure* done);
   
   // implements Service ----------------------------------------------
   
@@ -290,6 +294,10 @@ class TestSvr_Stub : public TestSvr {
   // implements TestSvr ------------------------------------------
   
   void Echo(::google::protobuf::RpcController* controller,
+                       const ::test::EchoReq* request,
+                       ::test::EchoResp* response,
+                       ::google::protobuf::Closure* done);
+  void Echo2(::google::protobuf::RpcController* controller,
                        const ::test::EchoReq* request,
                        ::test::EchoResp* response,
                        ::google::protobuf::Closure* done);

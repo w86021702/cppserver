@@ -16,4 +16,6 @@ message EchoResp
 service TestSvr
 {
     rpc Echo(EchoReq) returns (EchoResp);
+
+    rpc Echo2(EchoReq) returns (EchoResp);
 };

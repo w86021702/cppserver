@@ -14,9 +14,21 @@ public:
                        ::test::EchoResp* response,
                        ::google::protobuf::Closure* done)
   {
-      string ss = "svr:hello! req : " + request->msg();
+      while(1) {}
+      string ss = "echo:hello! req : " + request->msg();
       response->set_msg(ss);
       response->set_code(99);
+      done->Run();
+  }
+
+  virtual void Echo2(::google::protobuf::RpcController* controller,
+                       const ::test::EchoReq* request,
+                       ::test::EchoResp* response,
+                       ::google::protobuf::Closure* done)
+  {
+      string ss = "echo2: hi! req : " + request->msg();
+      response->set_msg(ss);
+      response->set_code(2);
       done->Run();
   }
 };

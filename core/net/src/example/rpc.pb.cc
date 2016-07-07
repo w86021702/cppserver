@@ -100,8 +100,9 @@ void protobuf_AddDesc_rpc_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\trpc.proto\022\004test\"\026\n\007EchoReq\022\013\n\003msg\030\001 \002("
     "\t\"7\n\010EchoResp\022\013\n\003msg\030\001 \002(\t\022\014\n\004code\030\002 \001(\r"
-    "\022\020\n\010testCode\030\003 \001(\r20\n\007TestSvr\022%\n\004Echo\022\r."
-    "test.EchoReq\032\016.test.EchoResp", 148);
+    "\022\020\n\010testCode\030\003 \001(\r2X\n\007TestSvr\022%\n\004Echo\022\r."
+    "test.EchoReq\032\016.test.EchoResp\022&\n\005Echo2\022\r."
+    "test.EchoReq\032\016.test.EchoResp", 188);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "rpc.proto", &protobuf_RegisterTypes);
   EchoReq::default_instance_ = new EchoReq();
@@ -673,6 +674,14 @@ void TestSvr::Echo(::google::protobuf::RpcController* controller,
   done->Run();
 }
 
+void TestSvr::Echo2(::google::protobuf::RpcController* controller,
+                         const ::test::EchoReq*,
+                         ::test::EchoResp*,
+                         ::google::protobuf::Closure* done) {
+  controller->SetFailed("Method Echo2() not implemented.");
+  done->Run();
+}
+
 void TestSvr::CallMethod(const ::google::protobuf::MethodDescriptor* method,
                              ::google::protobuf::RpcController* controller,
                              const ::google::protobuf::Message* request,
@@ -682,6 +691,12 @@ void TestSvr::CallMethod(const ::google::protobuf::MethodDescriptor* method,
   switch(method->index()) {
     case 0:
       Echo(controller,
+             ::google::protobuf::down_cast<const ::test::EchoReq*>(request),
+             ::google::protobuf::down_cast< ::test::EchoResp*>(response),
+             done);
+      break;
+    case 1:
+      Echo2(controller,
              ::google::protobuf::down_cast<const ::test::EchoReq*>(request),
              ::google::protobuf::down_cast< ::test::EchoResp*>(response),
              done);
@@ -698,6 +713,8 @@ const ::google::protobuf::Message& TestSvr::GetRequestPrototype(
   switch(method->index()) {
     case 0:
       return ::test::EchoReq::default_instance();
+    case 1:
+      return ::test::EchoReq::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       return *reinterpret_cast< ::google::protobuf::Message*>(NULL);
@@ -709,6 +726,8 @@ const ::google::protobuf::Message& TestSvr::GetResponsePrototype(
   GOOGLE_DCHECK_EQ(method->service(), descriptor());
   switch(method->index()) {
     case 0:
+      return ::test::EchoResp::default_instance();
+    case 1:
       return ::test::EchoResp::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
@@ -732,6 +751,13 @@ void TestSvr_Stub::Echo(::google::protobuf::RpcController* controller,
                               ::test::EchoResp* response,
                               ::google::protobuf::Closure* done) {
   channel_->CallMethod(descriptor()->method(0),
+                       controller, request, response, done);
+}
+void TestSvr_Stub::Echo2(::google::protobuf::RpcController* controller,
+                              const ::test::EchoReq* request,
+                              ::test::EchoResp* response,
+                              ::google::protobuf::Closure* done) {
+  channel_->CallMethod(descriptor()->method(1),
                        controller, request, response, done);
 }
 
