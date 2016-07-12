@@ -3,7 +3,7 @@
 
 #include "commdef.h"
 
-namespace CM{
+namespace CMLog{
 
 enum ELogLevelType
 {

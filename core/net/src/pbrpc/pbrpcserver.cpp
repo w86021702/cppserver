@@ -24,11 +24,12 @@ CRPCServer::~CRPCServer()
     {
         delete method;
     }
+    _toDelete.clear();
 }
 
 int CRPCServer::RegisterServices(gpb::Service* services)
 {
-    const auto* servicesDesc  = services->GetDescriptor();
+    const auto* servicesDesc = services->GetDescriptor();
     int methodCnt = servicesDesc->method_count();
 
     for ( int i = 0; i < methodCnt; ++i )
