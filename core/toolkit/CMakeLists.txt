@@ -11,13 +11,21 @@ INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR}/src/thread/)
 
 SET(SRC_LIST 
     ${PROJECT_BINARY_DIR}/src/thread/queue.cpp
+    ${PROJECT_BINARY_DIR}/src/thread/thread_pool.cpp
+    ${PROJECT_BINARY_DIR}/src/thread/coroutine.cpp
     )
 
 MESSAGE(STATUS "src list dir :" ${SRC_LIST})
-ADD_LIBRARY(cmthread STATIC ${SRC_LIST})
-TARGET_LINK_LIBRARIES(cmthread pthread corenet protobuf)
+ADD_LIBRARY(tlthread STATIC ${SRC_LIST})
+TARGET_LINK_LIBRARIES(tlthread pthread corenet protobuf)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 MESSAGE(STATUS "ToolKit Project dir :" ${PROJECT_BINARY_DIR})
 MESSAGE(STATUS "ToolKit source Project dir :" ${CMAKE_SOURCE_DIR})
+
+SET(SRC_LIST 
+    ${PROJECT_BINARY_DIR}/src/thread/test.cpp
+    )
+MESSAGE(STATUS "src list dir :" ${SRC_LIST})
+ADD_EXECUTABLE(test ${SRC_LIST})
