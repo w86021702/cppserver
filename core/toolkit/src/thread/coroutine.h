@@ -1,12 +1,15 @@
 #ifndef __TOOL_COROUTINE_H__
 #define __TOOL_COROUTINE_H__
 
+//makecontext和swapcontext协程调度器
+
 #include <map>
 #include <ucontext.h>
 
 namespace Tool{
 namespace Thread{
 
+#define CORUTINE_STACK_SIZE 1024*128
 typedef void (*Fun)(void*);
 
 class CCorutineSchedule
@@ -26,11 +29,13 @@ public:
         Fun fun = NULL;
         void *arg = NULL;
         ucontext ctx;
-        char stack[1024*128];
+        char stack[CORUTINE_STACK_SIZE];
         ECoroutineState state;
     };
 
 public:
+    CCorutineSchedule();
+    ~CCorutineSchedule();
     int CreateCorutine(Fun func, void* arg);
     int Yield();
     int ResumeCoroutine(Fun func, void* arg);

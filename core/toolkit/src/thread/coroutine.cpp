@@ -4,10 +4,24 @@
 
 using namespace Tool::Thread;
 
+CCorutineSchedule::CCorutineSchedule()
+{
+}
+
+CCorutineSchedule::~CCorutineSchedule()
+{
+    for (auto iter : _coroutines)
+    {
+        delete iter.second;
+    }
+    _coroutines.clear();
+}
+
 int CCorutineSchedule::__GetFunAddr(Fun fun)
 {
     int addr;
-    snprintf((char*)&addr, sizeof(addr), "%d", fun);
+    memcpy((char*)&addr, (const void*)fun, sizeof(addr));
+    //snprintf((char*)&addr, sizeof(addr), "%d", fun);
     return addr;
 }
 

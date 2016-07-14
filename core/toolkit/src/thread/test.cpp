@@ -81,6 +81,7 @@ int test2(int argc, char** argv)
     cs->CreateCorutine(f2, NULL);
 
     cs->ResumeCoroutine(f1, NULL);
+    cs->ResumeCoroutine(f2, NULL);
     cs->ResumeCoroutine(f1, NULL);
     //ResumeCoroutine(f1, NULL);
     return 0;
