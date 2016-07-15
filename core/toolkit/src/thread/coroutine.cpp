@@ -19,9 +19,12 @@ CCorutineSchedule::~CCorutineSchedule()
 
 int CCorutineSchedule::__GetFunAddr(Fun fun)
 {
+    char tmp[1024];
     int addr;
-    memcpy((char*)&addr, (const void*)fun, sizeof(addr));
-    //snprintf((char*)&addr, sizeof(addr), "%d", fun);
+    //memcpy((char*)&addr, (const void*)fun, sizeof(addr));
+    snprintf(tmp, sizeof(tmp), "%d", fun);
+    addr = atoi(tmp);
+    printf("%s addr:%d fun:%d\n", __func__, addr, fun);
     return addr;
 }
 
