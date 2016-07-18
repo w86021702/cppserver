@@ -12,6 +12,8 @@ namespace Thread{
 #define CORUTINE_STACK_SIZE 1024*128
 typedef void (*Fun)(void*);
 
+const unsigned int MAX_CORUTINE_ID = 65536;
+
 class CCorutineSchedule
 {
 public:
@@ -37,21 +39,23 @@ public:
     CCorutineSchedule();
     ~CCorutineSchedule();
     int CreateCorutine(Fun func, void* arg);
-    int RemoveCorutine(Fun func);
+    int RemoveCorutine(unsigned int coroutineID);
     int Yield();
-    int ResumeCoroutine(Fun func, void* arg);
-    bool IsAlive(Fun fun);
+    int ResumeCoroutine(unsigned int coroutineID);
+    bool IsAlive(unsigned int coroutineID);
     bool IsAllFinsh();
 
 private:
     int __GetFunAddr(Fun fun);
     int __ClearAllFree();
+    int __AllocCoroutinedId();
     static void __Begin(void *arg);
 
 private:
     std::map<int, SCoroutine*> _coroutines;
     ucontext _uctx_main;
     int _curfunc = -1;
+    unsigned int _usefulCoroutineId = 0;
 };
 
 }}

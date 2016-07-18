@@ -48,6 +48,13 @@ void CCorutineSchedule::__Begin(void *arg)
     //printf("##%s end\n", __func__);
 }
 
+int CCorutineSchedule::__AllocCoroutinedId()
+{
+    while( _coroutines.find(++_usefulCoroutineId % MAX_CORUTINE_ID) != _coroutines.end() );
+    _usefulCoroutineId = _usefulCoroutineId % MAX_CORUTINE_ID;
+    return _usefulCoroutineId;
+}
+
 int CCorutineSchedule::CreateCorutine(Fun fun, void *arg)
 {
     SCoroutine* thread = new SCoroutine();
@@ -59,7 +66,7 @@ int CCorutineSchedule::CreateCorutine(Fun fun, void *arg)
         return -1;
     }
 
-    thread->id = __GetFunAddr(fun);
+    thread->id = __AllocCoroutinedId();
     thread->fun = fun;
     thread->state = ECoroutine_Ready;
     thread->arg = arg;
@@ -71,12 +78,12 @@ int CCorutineSchedule::CreateCorutine(Fun fun, void *arg)
     _coroutines[thread->id] = thread;
     printf("%s, func: %d  threadId:%d\n", __func__, fun, thread->id);
 
-    return 0;
+    return thread->id;
 }
 
-int CCorutineSchedule::RemoveCorutine(Fun fun)
+int CCorutineSchedule::RemoveCorutine(unsigned int coroutineID)
 {
-    auto iter = _coroutines.find(__GetFunAddr(fun));
+    auto iter = _coroutines.find(coroutineID);
     if (iter == _coroutines.end())
     {
         printf("%s find not addr %d\n", __func__, _curfunc);
@@ -122,13 +129,13 @@ int CCorutineSchedule::Yield()
     return 0;
 }
 
-int CCorutineSchedule::ResumeCoroutine(Fun fun, void* arg)
+int CCorutineSchedule::ResumeCoroutine(unsigned int coroutineID)
 {
     printf("%s begin\n", __func__);
-    auto iter = _coroutines.find(__GetFunAddr(fun));
+    auto iter = _coroutines.find(coroutineID);
     if (iter == _coroutines.end())
     {
-        printf("%s find not addr %d\n", __func__, __GetFunAddr(fun));
+        printf("%s find not addr %d\n", __func__, coroutineID);
         return -1;
     }
 
@@ -151,8 +158,8 @@ int CCorutineSchedule::ResumeCoroutine(Fun fun, void* arg)
     //    }
     //}
 
-    printf("%s curfunc addr %d, func addr %d\n", __func__, _curfunc, __GetFunAddr(fun));
-    _curfunc = __GetFunAddr(fun);
+    printf("%s curfunc addr %d, func addr %d\n", __func__, _curfunc, coroutineID);
+    _curfunc = coroutineID;
     crtine.state = ECoroutine_Runing;
 
     printf("%s swapcontext(&_uctx_main, &crtine.ctx)\n", __func__);
@@ -167,12 +174,12 @@ int CCorutineSchedule::ResumeCoroutine(Fun fun, void* arg)
     return 0;
 }
 
-bool CCorutineSchedule::IsAlive(Fun fun)
+bool CCorutineSchedule::IsAlive(unsigned int coroutineID)
 {
-    auto iter = _coroutines.find(__GetFunAddr(fun));
+    auto iter = _coroutines.find(coroutineID);
     if (iter == _coroutines.end())
     {
-        printf("%s find not addr %d\n", __func__, __GetFunAddr(fun));
+        printf("%s find not addr %d\n", __func__, coroutineID);
         return false;
     }
 

@@ -77,13 +77,14 @@ void f2(void *arg)
 
 int test2(int argc, char** argv)
 {
-    cs->CreateCorutine(f1, NULL);
-    cs->CreateCorutine(f2, NULL);
+    unsigned int cid1, cid2;
+    cid1 = cs->CreateCorutine(f1, NULL);
+    cid2 = cs->CreateCorutine(f2, NULL);
 
-    cs->ResumeCoroutine(f1, NULL);
-    cs->ResumeCoroutine(f2, NULL);
-    cs->ResumeCoroutine(f1, NULL);
-    cs->ResumeCoroutine(f2, NULL);
+    cs->ResumeCoroutine(cid1);
+    cs->ResumeCoroutine(cid2);
+    cs->ResumeCoroutine(cid1);
+    cs->ResumeCoroutine(cid2);
     //ResumeCoroutine(f1, NULL);
     return 0;
 }
