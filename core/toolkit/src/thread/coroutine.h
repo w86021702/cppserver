@@ -37,6 +37,7 @@ public:
     CCorutineSchedule();
     ~CCorutineSchedule();
     int CreateCorutine(Fun func, void* arg);
+    int RemoveCorutine(Fun func);
     int Yield();
     int ResumeCoroutine(Fun func, void* arg);
     bool IsAlive(Fun fun);
@@ -44,6 +45,7 @@ public:
 
 private:
     int __GetFunAddr(Fun fun);
+    int __ClearAllFree();
     static void __Begin(void *arg);
 
 private:

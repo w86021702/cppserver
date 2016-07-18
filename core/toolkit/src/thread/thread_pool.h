@@ -1,8 +1,7 @@
 #ifndef __TOOL_THREAD_POOL__
 #define __TOOL_THREAD_POOL__
 
-//用户级线程
-//支持协程
+//线程池
 
 namespace tool{
 namespace thread{

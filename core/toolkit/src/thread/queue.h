@@ -1,7 +1,7 @@
 #ifndef __TOOL_THREAD_QUEUE_H__
 #define __TOOL_THREAD_QUEUE_H__
 
-#include <stdio.h>
+#include <iostream>
 
 namespace tool{
 namespace thread{
@@ -12,7 +12,9 @@ public:
     CQueue(unsigned int size = 50);
     ~CQueue();
 
-    int Add(void *arg);
+    int Push(void* arg);
+
+    //由调用方管理front内存
     int Pop(void* front);
     unsigned int Size();
     bool Empty();
@@ -20,12 +22,12 @@ public:
 private:
     struct QNode
     {
-       void *data = NULL;
+        void *data = NULL;
     };
 
     QNode *_head;
-    volatile unsigned int _tail;
     volatile unsigned int _cur;
+    volatile unsigned int _tail;
     unsigned int _size;
 };
 

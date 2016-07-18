@@ -21,7 +21,6 @@ int CCorutineSchedule::__GetFunAddr(Fun fun)
 {
     char tmp[1024];
     int addr;
-    //memcpy((char*)&addr, (const void*)fun, sizeof(addr));
     snprintf(tmp, sizeof(tmp), "%d", fun);
     addr = atoi(tmp);
     printf("%s addr:%d fun:%d\n", __func__, addr, fun);
@@ -30,7 +29,7 @@ int CCorutineSchedule::__GetFunAddr(Fun fun)
 
 void CCorutineSchedule::__Begin(void *arg)
 {
-    printf("##%s begin\n", __func__);
+    //printf("##%s begin\n", __func__);
     CCorutineSchedule* sch = (CCorutineSchedule*)arg;
     auto iter = sch->_coroutines.find(sch->_curfunc);
     if (iter == sch->_coroutines.end())
@@ -46,7 +45,7 @@ void CCorutineSchedule::__Begin(void *arg)
 
     crtine.state = ECoroutine_Free;
     sch->_curfunc = -1;
-    printf("##%s end\n", __func__);
+    //printf("##%s end\n", __func__);
 }
 
 int CCorutineSchedule::CreateCorutine(Fun fun, void *arg)
@@ -75,6 +74,24 @@ int CCorutineSchedule::CreateCorutine(Fun fun, void *arg)
     return 0;
 }
 
+int CCorutineSchedule::RemoveCorutine(Fun fun)
+{
+    auto iter = _coroutines.find(__GetFunAddr(fun));
+    if (iter == _coroutines.end())
+    {
+        printf("%s find not addr %d\n", __func__, _curfunc);
+        return -1;
+    }
+
+    if (iter->second)
+    {
+        delete iter->second;
+    }
+    _coroutines.erase(iter);
+
+    return 0;
+}
+
 int CCorutineSchedule::Yield()
 {
     printf("%s curfunc %d\n", __func__, _curfunc);
@@ -94,6 +111,7 @@ int CCorutineSchedule::Yield()
         printf("%s swapcontext(&crtine.ctx, &_uctx_main)\n", __func__);
         if (-1 == swapcontext(&crtine.ctx, &_uctx_main))
         {
+            crtine.state = ECoroutine_Runing;
             printf("%s swapcontext fail\n", __func__);
             return -1;
         }
@@ -135,10 +153,12 @@ int CCorutineSchedule::ResumeCoroutine(Fun fun, void* arg)
 
     printf("%s curfunc addr %d, func addr %d\n", __func__, _curfunc, __GetFunAddr(fun));
     _curfunc = __GetFunAddr(fun);
+    crtine.state = ECoroutine_Runing;
 
     printf("%s swapcontext(&_uctx_main, &crtine.ctx)\n", __func__);
     if (-1 == swapcontext(&_uctx_main, &crtine.ctx))
     {
+        crtine.state = ECoroutine_Suspend;
         printf("%s swapcontext fail\n", __func__);
         return -1;
     }
@@ -175,4 +195,23 @@ bool CCorutineSchedule::IsAllFinsh()
         }
     }
     return true;
+}
+
+int CCorutineSchedule::__ClearAllFree()
+{
+    for (std::map<int, SCoroutine*>::iterator iter =  _coroutines.begin();
+            iter != _coroutines.end(); )
+    {
+        auto& coroutine = *(iter->second);
+        if (coroutine.state == ECoroutine_Free)
+        {
+            delete iter->second;
+            iter = _coroutines.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+    return 0;
 }

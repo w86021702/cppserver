@@ -14,7 +14,7 @@ CQueue::~CQueue()
     delete[] _head;
 }
 
-int CQueue::Add(void *arg)
+int CQueue::Push(void *arg)
 {
     unsigned int curIdx = 0;
     unsigned int tryCnt = 0;
