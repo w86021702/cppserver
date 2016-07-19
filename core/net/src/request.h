@@ -36,14 +36,13 @@ public:
     ~CRequest();
 
     bool Parse(const char *str, unsigned int len);
-
+    SHeader GetHeader(){ return _header; };
     void test();
 
 private:
     SHeader _header;
     std::string _body;
 };
-
 
 }
 

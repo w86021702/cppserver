@@ -82,6 +82,14 @@ int CClient::HandleRead()
             CRequest request;
             request.Parse(req, reqLen);
 
+            //构建resp
+            //char body[2096];
+            //CRequest::SHeader respHeader = request.GetHeader();
+            //respHeader.dataLen = sizeof(body);
+            //struct evbuffer* output = bufferevent_get_output(_bev);
+            //evbuffer_add(output, (char*)&respHeader, sizeof(respHeader));
+            //evbuffer_add(output, (char*)body, sizeof(body));
+
             //debug
             len = evbuffer_get_length(input);
             printf("after remove len:%d\n", len);
@@ -201,8 +209,15 @@ int CClient::SetReactor(void* reactor)
 //    }
 //    return 0;
 //}
+
 void writecb(struct bufferevent *bev, void *ptr)
 {
+    CChannel *channel = (CChannel*)ptr;
+	int ret = channel->HandleWrite();
+    if (ret != 0)
+    {
+        return ;
+    }
 }
 
 void event_cb(struct bufferevent *bev, short event, void *arg)
