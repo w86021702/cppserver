@@ -1,4 +1,4 @@
-#define NGX_CONFIGURE " --prefix=/home/godman/nginx-1.8.1 --with-google_perftools_module --with-http_gzip_static_module --with-http_stub_status_module"
+#define NGX_CONFIGURE " --prefix=/home/godman/nginx-1.8.1 --with-http_stub_status_module --with-http_gzip_static_module --with-google_perftools_module"
 
 #ifndef NGX_COMPILER
 #define NGX_COMPILER  "gcc 4.8.2 20140120 (Red Hat 4.8.2-15) (GCC) "
@@ -320,6 +320,11 @@
 
 #ifndef NGX_PCRE
 #define NGX_PCRE  1
+#endif
+
+
+#ifndef NGX_HAVE_PCRE_JIT
+#define NGX_HAVE_PCRE_JIT  1
 #endif
 
 
